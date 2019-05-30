@@ -1,0 +1,329 @@
+[
+    {
+        "id": 1,
+        "titulo_empresa": "Kramer",
+        "maquina": [{
+                "modelo": "modelo 1.1",
+                "img": "img/images/kramer/1.png"  
+            },
+            {
+                "modelo": "modelo 1.2",
+                "img": "img/images/kramer/2.png"  
+            },
+            {
+                "modelo": "modelo 1.3",
+                "img": "img/images/kramer/3.png"  
+            },
+            {
+                "modelo": "modelo 1.4",
+                "img": "img/images/kramer/4.png"  
+            },
+            {
+                "modelo": "modelo 1.5",
+                "img": "img/images/kramer/5.png"  
+            },
+            {
+                "modelo": "modelo 1.6",
+                "img": "img/images/kramer/6.png"  
+            },
+            {
+                "modelo": "modelo 1.7",
+                "img": "img/images/kramer/7.png"  
+            },
+            {
+                "modelo": "modelo 1.8",
+                "img": "img/images/kramer/8.png"  
+            }
+        ],
+        "archivo": [{
+                "modelo": "modelo 1.1",
+                "nombre_archivo": "archivo 1.1",
+                "ruta": "img/catalogos/cw3_400ul_automatic_checkweigher.pdf"  
+            },
+            {
+                "modelo": "modelo 1.2",
+                "nombre_archivo": "archivo 2.1",
+                "ruta": "img/catalogos/linx_8900.pdf"  
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "titulo_empresa": "Solpak",
+        "maquina": [{
+            "modelo": "modelo 2.1",
+            "img": "img/images/solpak/imagen_1.jpg"  
+            },
+            {
+            "modelo": "modelo 2.2",
+            "img": "img/images/solpak/imagen_2.jpg"  
+            },
+            {
+            "modelo": "modelo 2.3",
+            "img": "img/images/solpak/imagen_3.jpg"  
+            },
+            {
+            "modelo": "modelo 2.4",
+            "img": "img/images/solpak/imagen_4.jpg"  
+            }
+        ],
+        "archivo": [{
+                "modelo": "modelo 2.1",
+                "nombre_archivo": "archivo 2.1",
+                "ruta": "img/images/solpak/x5_space_saver.pdf"  
+            },
+            {
+                "modelo": "modelo 2.2",
+                "nombre_archivo": "archivo 2.2",
+                "ruta": "img/images/solpak/x5_xray_inspection_system.pdff"  
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "titulo_empresa": "Loma",
+        "maquina": [{
+            "modelo": "IQ4 & CW3 Combos",
+            "img": "img/images/loma/IQ4MetalDetection_CW3CheckweighingCombinationSystem.jpg"  
+            },
+            {
+            "modelo": "IQ4 Waferthin",
+            "img": "img/images/loma/IQ4-Waferthin-Metal-Detector.jpg"  
+            },
+            {
+            "modelo": "IQ4 Vertical fall",
+            "img": "img/images/loma/IQ4-Vertical-Fall-Metal-Detector.jpg"  
+            },
+            {
+            "modelo": "IQ4 Pipeline",
+            "img": "img/images/loma/IQ4-Pipeline-L-Bracket.jpg"  
+            },
+            {
+            "modelo": "IQ4 Pipeline",
+            "img": "img/images/loma/iq4ppl.jpg"  
+            },
+            {
+            "modelo": "IQ4 MDH",
+            "img": "img/images/loma/The-Revolutionary-IQ4-Metal-Detector-from-Loma-Systems_wrbm_product_file.jpg"  
+            },
+            {
+            "modelo": "IQ4 MDH",
+            "img": "img/images/loma/Loma-IQ4Touchscreen.jpg"  
+            },
+            {
+            "modelo": "IQ4 MDH",
+            "img": "img/images/loma/IQ4-Sop-On-Detect-Metal-Detectorhead.jpg"  
+            },
+            {
+            "modelo": "IQ4 MDH",
+            "img": "img/images/loma/IQ4-Metal-Detector-Head-Only.jpg"  
+            },
+            {
+            "modelo": "IQ4 MDC",
+            "img": "img/images/loma/IQ4-MDC-SOD-RENDER.jpg"  
+            },
+            {
+            "modelo": "IQ4 MDC",
+            "img": "img/images/loma/IQ4-Metal-Detector-Conveyor.jpg"  
+            },
+            {
+            "modelo": "IQ4 MDC",
+            "img": "img/images/loma/IQ4-Range-Launch.jpg"  
+            },
+            {
+            "modelo": "IQ4 MDC",
+            "img": "img/images/loma/Metal_Detector_v2_English.jpg"  
+            }            
+        ],
+        "archivo": [{
+                "modelo": "IQ4 & CW3 Combos",
+                "nombre_archivo": "Metal Detection Combination Datasheet",
+                "ruta": "img/images/loma/IQ4_&_CW3_Combos/Metal_Detection_Combination_Datasheet.pdf"  
+            },
+            {
+                "modelo": "IQ4 Waferthin",
+                "nombre_archivo": "IQ4 Waferthin Datashee",
+                "ruta": "img/images/loma/IQ4_Waferthin/IQ4_Waferthin_Datasheet.pdf"  
+            },
+            {
+                "modelo": "IQ4 Vertical Fall",
+                "nombre_archivo": "IQ4 Vertical Fall Datasheet",
+                "ruta": "img/images/loma/IQ4_Vertical_fall/IQ4_Vertical_Fall_Datasheet.pdf"  
+            },
+            {
+                "modelo": "IQ4 Vertical Fall",
+                "nombre_archivo": "IQ4 Pipeline Meat Applications Datasheet",
+                "ruta": "img/images/loma/IQ4_Pipeline/IQ4_Pipeline_Meat_Applications_Datasheet.pdf"  
+            },
+            {
+                "modelo": "IQ4 Vertical Fall",
+                "nombre_archivo": "IQ4 Pipeline Non-Meat Applications Datasheet",
+                "ruta": "img/images/loma/IQ4_Pipeline/IQ4_Pipeline_Non-Meat_Applications_Datasheet.pdf"  
+            },
+            {
+                "modelo": "IQ4 MDH",
+                "nombre_archivo": "IQ4 Metal Detection Head Only Datasheet",
+                "ruta": "img/images/loma/IQ4_MDH/IQ4_Metal_Detection_Head_Only_Datasheet.pdf"  
+            },
+            {
+                "modelo": "IQ4 MDC",
+                "nombre_archivo": "IQ4 Metal Detection Conveyor Datasheet",
+                "ruta": "img/images/loma/IQ4_MDC/IQ4_Metal_Detection_Conveyor_Datasheet.pdf"  
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "titulo_empresa": "Bpa",
+        "maquina": [{
+            "modelo": "modelo 4.1",
+            "img": "img/images/bpa/1.png"  
+            },
+            {
+            "modelo": "modelo 4.2",
+            "img": "img/images/bpa/2.png"
+            },
+            {
+            "modelo": "modelo 4.3",
+            "img": "img/images/bpa/3.png"
+            },
+            {
+            "modelo": "modelo 4.4",
+            "img": "img/images/bpa/4.png"
+            },
+            {
+            "modelo": "modelo 4.5",
+            "img": "img/images/bpa/5.png"
+            },
+            {
+            "modelo": "modelo 4.6",
+            "img": "img/images/bpa/6.png"
+            },
+            {
+            "modelo": "modelo 4.7",
+            "img": "img/images/bpa/7.png"
+            },
+            {
+            "modelo": "modelo 4.8",
+            "img": "img/images/bpa/8.png"
+            },
+            {
+            "modelo": "modelo 4.9",
+            "img": "img/images/bpa/9.png"
+            },
+            {
+            "modelo": "modelo 4.10",
+            "img": "img/images/bpa/10.png"
+            },
+            {
+            "modelo": "modelo 4.11",
+            "img": "img/images/bpa/11.png"
+            },
+            {
+            "modelo": "modelo 4.12",
+            "img": "img/images/bpa/12.png"
+            },
+            {
+            "modelo": "modelo 4.13",
+            "img": "img/images/bpa/13.png"
+            },
+            {
+            "modelo": "modelo 4.14",
+            "img": "img/images/bpa/14.png"
+            }
+        ],
+        "archivo": []
+    },
+    {
+        "id": 5,
+        "titulo_empresa": "Pti",
+        "maquina": [{
+            "modelo": "modelo 5.1",
+            "img": "img/images/pti/1.png"  
+            },
+            {
+            "modelo": "modelo 5.2",
+            "img": "img/images/pti/2.png"  
+            },
+            {
+            "modelo": "modelo 5.3",
+            "img": "img/images/pti/3.png"  
+            },
+            {
+            "modelo": "modelo 5.4",
+            "img": "img/images/pti/4.png"  
+            },
+            {
+            "modelo": "modelo 5.5",
+            "img": "img/images/pti/5.png"  
+            },
+            {
+            "modelo": "modelo 5.6",
+            "img": "img/images/pti/6.png"  
+            }
+        ],
+        "archivo": []
+    },
+    {
+        "id": 6,
+        "titulo_empresa": "Linx",
+        "maquina": [{
+            "modelo": "modelo 6.1",
+            "img": "img/images/linx/1.png"  
+            },
+            {
+            "modelo": "modelo 6.3",
+            "img": "img/images/linx/3.png"  
+            },
+            {
+            "modelo": "modelo 6.4",
+            "img": "img/images/linx/4.png"  
+            },
+            {
+            "modelo": "modelo 6.5",
+            "img": "img/images/linx/5.png"  
+            },
+            {
+            "modelo": "modelo 6.6",
+            "img": "img/images/linx/6.png"  
+            },
+            {
+            "modelo": "modelo 6.7",
+            "img": "img/images/linx/7.png"  
+            },
+            {
+            "modelo": "modelo 6.8",
+            "img": "img/images/linx/8.png"  
+            },
+            {
+            "modelo": "modelo 6.9",
+            "img": "img/images/linx/9.png"  
+            },
+            {
+            "modelo": "modelo 6.10",
+            "img": "img/images/linx/10.png"  
+            },
+            {
+            "modelo": "modelo 6.11",
+            "img": "img/images/linx/11.png"  
+            },
+            {
+            "modelo": "modelo 6.12",
+            "img": "img/images/linx/12.png"  
+            },
+            {
+            "modelo": "modelo 6.13",
+            "img": "img/images/linx/13.png"  
+            },
+            {
+            "modelo": "modelo 6.14",
+            "img": "img/images/linx/14.png"  
+            },
+            {
+            "modelo": "modelo 6.15",
+            "img": "img/images/linx/15.png"  
+            }
+        ],
+        "archivo": []
+    }
+]
