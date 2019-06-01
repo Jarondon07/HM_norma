@@ -51,12 +51,12 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-12">
-                            <h3 class="page-header">Modulo y Secciones - Gestionar</h3>
+                            <h3 class="page-header">Modulos - Gestionar</h3>
                         </div>
                         <!-- /.col-lg-12 -->
                     </div>
                     <!-- /.row -->
-                    <div class="row">
+                    <div class="row" id="modulos">
                         <div class="col-lg-12">
                             <div class="panel panel-primary">
                                 <div class="panel-heading text-right">
@@ -66,7 +66,7 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                                 </div>
                                 <div class="panel-body">
                                     <div id="mensaje"></div>
-                                    <div class="row">
+                                    <div class="row" ">
                                         <div class=" col-lg-12">
                                             <div class="table-responsive">
                                                 <table class="table table-striped table-bordered table-hover" style="margin-top: 20px;">
@@ -84,12 +84,16 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                                             </div>
                                         </div>
                                     </div>
+                                    
                                 </div>                                    
                                 <div class="panel-footer text-center">
                                     HM
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row oculto" id="secciones">
+                        aqui voy secciones
                     </div>
 
                     <!-- /.row -->

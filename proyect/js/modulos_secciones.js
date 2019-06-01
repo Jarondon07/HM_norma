@@ -89,8 +89,9 @@ function guardarModulo(){
 
 //buscar y listar los Modulos
 function buscarModulo(loandig){
+    loandig = loandig || 0;
 	//console.log("aqui estan");
-	loandig = 0;
+	
 	var settings = {
         "async": true,
         "crossDomain": true,
@@ -125,11 +126,21 @@ function buscarModulo(loandig){
 
     		resultado.lista.forEach((data,indice,array)=>{
     			//console.log(data);
+                let checked = (data.estatus == true)?'checked':'';
 	    		let fila = '';
 	    		fila += '<tr>';
 	    			fila += '<td>'+data.descripcion+'</td>';
-	    			fila += '<td>'+data.estatus+'</td>';
-	    			fila += '<td>Accion</td>';
+	    			fila += '<td class="text-center">';
+                        fila += '<label class="switch">';
+                            fila += '<input type="checkbox" onclick="cambiar_estatus_modelo('+data.id+')" id="cambio'+data.id+'" '+checked+'>';
+                            fila += '<span class="slider round"></span>';
+                        fila += '</label>';
+                    fila += '</td>';
+	    			fila += '<td class="text-center">';
+                        fila += '<button type="button" title="Gestionar Secciones" class="btn btn-info btn-circle"><i class="fa fa-exchange"></i></button>&nbsp;';
+                            fila += '<button type="button" title="Editar Modulo" class="btn btn-success btn-circle"><i class="fa fa-refresh"></i></button>&nbsp;';
+                        fila += '<button type="button" title="Eliminar Secciones" class="btn btn-danger btn-circle"><i class="fa fa-remove"></i></button>';
+                    fila += '</td>';
 	    			    			
 	    		fila += '</tr>'; 
 	    		$("#registros_modulos").append(fila);
@@ -141,6 +152,56 @@ function buscarModulo(loandig){
     .fail(function(jqXHR, textStatus, errorThrown){
     	//console.log("fallo el envio")
     	alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje"));
+    });
+    hideLoader();
+}
+
+function cambiar_estatus_modelo(id,loandig){
+
+    loandig = loandig || 0;
+    
+    let estatus = $("#cambio"+id+"")[0].checked;
+
+    console.log(estatus);
+
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "type": "POST",
+        "dataType": "json",
+        "url": url_api+"modulo_seccionesControlador.php",
+        "cache": false,
+        "data": {
+            "tipo_accion": 3,
+            "id": id,
+            "estatus": estatus,
+        },
+        "beforeSend" : function() {
+            (loandig == 0?showLoader():'');
+        },
+    };
+    $.ajax(settings)
+    .done(function(data, textStatus, jqXHR){
+
+        console.log(data);
+        switch(data){
+            case 1:
+                buscarModulo(1);
+                alerta_mensaje('success', 'Modulo '+(estatus == true ?'Activado':'Desactivado')+'', $("#mensaje"));
+            break;
+            case 2:
+                alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje"));
+            break;
+            default:
+                alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_modal_crear"));
+                $('#login').html('Guardar');
+            break;
+        }
+        
+    })
+    .fail(function(jqXHR, textStatus, errorThrown){
+        //console.log("fallo el envio")
+        alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_modal_crear"));
     });
     hideLoader();
 }
