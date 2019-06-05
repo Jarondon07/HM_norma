@@ -92,8 +92,30 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                             </div>
                         </div>
                     </div>
+                    <!-- gestionar secciondes de modulos -->
                     <div class="row oculto" id="secciones">
-                        aqui voy secciones
+                        <div class="col-lg-12">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-4 col-lg-4 text-left">
+                                           <button type="button" id="atras_modulos" class="btn btn-danger btn-circle" title="Ir A Modulos">
+                                                <i class="fa fa-arrow-left"></i>
+                                            </button>
+                                        </div>  
+                                        <div class="col-xs-4 col-lg-4 text-center">
+                                            <h4>Sesion <span id="descripcion"></span></h4>
+                                        </div>  
+                                        <div class="col-xs-4 col-lg-4 text-right">
+                                            <button type="button" class="btn btn-success btn-circle" title="Crear Sesion" data-toggle="modal" data-target="#crear_sesion">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
 
                     <!-- /.row -->
@@ -124,6 +146,29 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         <button id="guardar_modulo" type="button" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="crear_sesion" tabindex="-1" role="dialog" aria-labelledby="modal_crear_sesion" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal_crear_sesion">Crear Sesion</h5>
+                    </div>
+                    <div class="modal-body" id="from_crear_sesion">
+                        <div class="form-row">
+                            <div id="mensaje_modal_sesion_crear"></div>
+                            <div class="form-group col-md-6" id="descripcion_sesion_error">
+                                <label for="descripcion_sesion">Nombre sesion</label>
+                                <input type="text" class="form-control" id="descripcion_sesion" placeholder="Descripcion" maxlength="25"  autofocus>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button id="guardar_sesion" type="button" class="btn btn-primary">Guardar</button>
                     </div>
                 </div>
             </div>
