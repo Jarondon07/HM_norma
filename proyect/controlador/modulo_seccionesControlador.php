@@ -53,8 +53,9 @@ if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == 3){
 }
 
 /** asignar sesiones a modulos **/
-if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == 3){
+if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == 4){
     
+    print_r($_GET);die();
     $id = $_POST['id'];
     $estatus = $_POST['estatus'];
 
