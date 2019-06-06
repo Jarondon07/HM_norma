@@ -38,3 +38,35 @@ if(isset($_GET['tipo_accion']) && $_GET['tipo_accion'] == 2){
     exit();
 }
 
+/** cambiar estatus del modulo **/
+if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == 3){
+    
+    $id = $_POST['id'];
+    $estatus = $_POST['estatus'];
+
+    $cambiarEstatusModulos = $db->estatusModulo($id,$estatus,$fecha,$id_usuario);
+
+    
+    header('Content-type: application/json; charset=utf-8');
+    echo json_encode($cambiarEstatusModulos);
+    exit();
+}
+
+/** asignar sesiones a modulos **/
+if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == 4){
+    
+    print_r($_POST);die();
+
+
+    
+    $id = $_POST['id'];
+    $estatus = $_POST['estatus'];
+
+    $cambiarEstatusModulos = $db->estatusModulo($id,$estatus,$fecha,$id_usuario);
+
+    
+    header('Content-type: application/json; charset=utf-8');
+    echo json_encode($cambiarEstatusModulos);
+    exit();
+}
+
