@@ -113,7 +113,7 @@ function guardarModulo(){
 function buscarModulo(loandig){
     loandig = loandig || 0;
 	//console.log(loandig);
-	
+
 	var settings = {
         "async": true,
         "crossDomain": true,
@@ -184,7 +184,9 @@ function cambiar_estatus_modelo(id,loandig){
     
     let estatus = $("#cambio"+id+"")[0].checked;
 
+
     //console.log(estatus);
+
 
     var settings = {
         "async": true,
@@ -206,6 +208,7 @@ function cambiar_estatus_modelo(id,loandig){
     .done(function(data, textStatus, jqXHR){
 
         //console.log(data);
+
         switch(data){
             case 1:
                 buscarModulo(1);
@@ -242,6 +245,7 @@ function gestionar_modulo(id_modulo,nombre){
     $("#secciones").removeClass('oculto');
 
     $("#detalle_descripcion").html(descripcion);    
+
     
     buscar_sesion()
 }
@@ -268,10 +272,12 @@ function guardarSesion(){
     console.log("guardar sesion");
 
     let descripcion = $("#descripcion_sesion").val().trim();
+
     id_modulo = Object.values(capt_modulo)[0];
 
     console.log(id_modulo);
     return;
+
 
     $(".form-group").removeClass('has-error');
 

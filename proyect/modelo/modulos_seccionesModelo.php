@@ -79,4 +79,41 @@ class MS
 		return $result;
 		
 	}
+
+	/** cambiar el estatus del modulo **/
+	function estatusModulo($id,$estatus,$fecha,$id_usuario){
+
+		$conexion = new Database();
+
+		$c = $conexion->conectar();
+
+		$c->beginTransaction();
+
+		$data = [
+			'id' => $id,
+			'estatus' => $estatus,
+			'fecha_modificacion' => $fecha,
+			'id_usuario'=>$id_usuario,
+		];
+
+		$sql = "UPDATE usuarios.modulos SET
+									estatus = :estatus, 
+									fecha_modificacion = :fecha_modificacion, 
+									usuario_id = :id_usuario
+								WHERE id = :id";
+		
+		$sth = $c->prepare($sql);
+
+		if($sth->execute($data)){
+			$c->commit();
+			$result = 1;
+		}
+		else{
+			$result = 0;
+		}
+
+		$conexion->disconnec();
+		
+		return $result;
+	}
 }
