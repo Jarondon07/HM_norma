@@ -8,6 +8,11 @@ $fecha = date("Y-m-d H:m:s");
 $db = new Usuarios();
 session_start();
 
+class AccionUsuario {
+	const Crear = 1;
+	const Buscar = 2;
+}
+
 /** iniciar sesion ***/
 if(!empty($_GET['documento']) && !empty($_GET['password']))
 {
@@ -72,7 +77,7 @@ if(isset($_GET['acceso']) && isset($_GET['id']) && $_GET['acceso'] == 'diegoESTU
 } 
 
 /** Crear usuario **/
-if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == 1){
+if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == AccionUsuario::Crear){
     //print_r($_POST);die();
     $documento = $_POST['documento'];
     $primer_nombre = $_POST['primer_nombre'];
@@ -90,7 +95,7 @@ if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == 1){
 }
 
 /** buscar usuarios **/
-if(isset($_GET['tipo_accion']) && $_GET['tipo_accion'] == 2){
+if(isset($_GET['tipo_accion']) && $_GET['tipo_accion'] == AccionUsuario::Buscar){
 
     $buscar = (isset($_GET['campo'])) ? $_GET['campo'] : null ;
 

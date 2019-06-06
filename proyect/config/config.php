@@ -8,7 +8,7 @@ class Database{
 		/* postgre  parametros*/
 		$usuario = 'postgres';
         $contrasena = '123456';
-        //$contrasena = '1234';
+        $contrasena = '1234';
         $host = 'localhost';
         $db = 'HM';
         $puerto = 5432;

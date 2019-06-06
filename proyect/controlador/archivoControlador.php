@@ -1,13 +1,18 @@
 <?php
 include "../modelo/archivoModelo.php";
 
-$db = new Archivos;
+$db = new Archivos();
+
+class TipoRegistro{
+	const Guardar = 1;
+	const Buscar = 2;
+}
 
 date_default_timezone_set('America/Caracas');
 $fecha_registro = date("Y-m-d");
 
 //guardar Registro
-if(isset($_POST['tipo']) && $_POST['tipo'] == 1)
+if(isset($_POST['tipo']) && $_POST['tipo'] == TipoRegistro::Guardar)
 {
 	
 	$expediente = $_POST['expediente'];
@@ -28,7 +33,7 @@ if(isset($_POST['tipo']) && $_POST['tipo'] == 1)
 }
 
 //buscar Registro
-if(isset($_GET['tipo']) && $_GET['tipo'] == 2)
+if(isset($_GET['tipo']) && $_GET['tipo'] == TipoRegistro::Buscar)
 {
 	$buscar = (isset($_GET['campo'])) ? $_GET['campo'] : null ;
 	
