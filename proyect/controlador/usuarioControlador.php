@@ -7,6 +7,7 @@ $fecha = date("Y-m-d H:m:s");
 /** conexion con el modelo **/
 $db = new Usuarios();
 session_start();
+
 /** iniciar sesion ***/
 if(!empty($_GET['documento']) && !empty($_GET['password']))
 {
@@ -80,7 +81,6 @@ if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == 1){
     $segundo_apellido = $_POST['segundo_apellido'];
 
     $id_usuario = $_SESSION['id'];
-
 
     $crearUsuario= $db->crearUsuario($documento,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$id_usuario);
 
