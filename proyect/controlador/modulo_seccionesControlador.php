@@ -5,9 +5,9 @@ include "../modelo/modulos_seccionesModelo.php";
 /** variable del usuario **/
 $fecha = date("Y-m-d H:m:s");
 /** conexion con el modelo **/
-$db = new MS();
+/*$db = new MS();
 session_start();
-$id_usuario = $_SESSION['id'];
+$id_usuario = $_SESSION['id'];*/
 
 class TipoRegistro{
     const CrearModulo = 1;
@@ -68,7 +68,7 @@ if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::CrearS
     $id_modulo = $_POST['id_modulo'];
 
     
-    $result = $db->crearSesion($descripcion,$nombre,$icono,$id_modulo,$id_usuario);
+    //$result = $db->crearSesion($descripcion,$nombre,$icono,$id_modulo,$id_usuario);
 
     
     header('Content-type: application/json; charset=utf-8');
