@@ -14,14 +14,17 @@ class TipoRegistro{
     const BuscarModulo = 2;
     const CambioEstatusModulo = 3;
     const CrearSesion = 4;
+    const ActualizarModulo = 5;
 }
 
 /** Crear usuario **/
 if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::CrearModulo){
         
+    $nombre = $_POST['nombre'];
+    $icono = $_POST['icono'];
     $descripcion = $_POST['descripcion'];
 
-    $crearMS = $db->crearModulo($descripcion,$id_usuario);
+    $crearMS = $db->crearModulo($nombre,$icono,$descripcion,$id_usuario);
 
     header('Content-type: application/json; charset=utf-8');
     echo json_encode($crearMS);
@@ -76,3 +79,17 @@ if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::CrearS
     exit();
 }
 
+/** Actualizar modulo **/
+if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::ActualizarModulo){
+
+    $descripcion = $_POST['descripcion'];
+    $nombre = $_POST['nombre'];
+    $icono=  $_POST['icono'];
+    $id_modulo = $_POST['id_modulo'];
+    
+    $result = $db->actualizarModulo($descripcion,$nombre,$icono,$id_modulo,$id_usuario);
+
+    header('Content-type: application/json; charset=utf-8');
+    echo json_encode($result);
+    exit();
+}

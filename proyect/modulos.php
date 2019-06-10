@@ -136,16 +136,67 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                     </div>
                     <div class="modal-body" id="from_crear_modulo">
                         <div class="row">
-                            <div id="mensaje_modal_crear"></div>
-                            <div class="form-group col-md-6" id="descripcion_error">
-                                <label for="descripcion">Nombre Modulo</label>
-                                <input type="text" class="form-control" id="descripcion" placeholder="Descripcion" maxlength="25"  autofocus>
+                            <div class="form-group col-md-12">
+                                <div id="mensaje_modal_crear"></div>
+                            </div>   
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6" id="nombre_modulo_error">
+                                <label for="nombre_modulo">Nombre Modulo</label>
+                                <input type="text" class="form-control" id="nombre_modulo" placeholder="Nombre" maxlength="25"  autofocus>
+                            </div>
+                            <div class="form-group col-md-6" id="icono_modulo_error">
+                                <label for="icono_modulo">icono</label>
+                                <input type="text" class="form-control" id="icono_modulo" placeholder="fa fa-ejemplo" maxlength="25">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12" id="descripcion_modulo_error">
+                                <label for="descripcion_modulo">Descripción</label>
+                                <input type="text" class="form-control" id="descripcion_modulo" placeholder="Descripción" maxlength="100">
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         <button id="guardar_modulo" type="button" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editar_modulo" tabindex="-1" role="dialog" aria-labelledby="modal_editar_modulo" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal_editar_modulo">Editar Modulo</h5>
+                    </div>
+                    <div class="modal-body" id="from_editar_modulo">
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <div id="mensaje_modal_editar"></div>
+                            </div>   
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6" id="nombre_editar_modulo_error">
+                                <label for="editar_nombre_modulo">Nombre Modulo</label>
+                                <input type="text" class="form-control" id="editar_nombre_modulo" placeholder="Nombre" maxlength="25"  autofocus>
+                            </div>
+                            <div class="form-group col-md-6" id="icono_editar_modulo_error">
+                                <label for="editar_icono_modulo">icono</label>
+                                <input type="text" class="form-control" id="editar_icono_modulo" placeholder="fa fa-ejemplo" maxlength="25">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12" id="descripcion_editar_modulo_error">
+                                <label for="editar_descripcion_modulo">Descripción</label>
+                                <input type="text" class="form-control" id="editar_descripcion_modulo" placeholder="Descripción" maxlength="100">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button id="boton_editar_modulo" type="button" class="btn btn-primary">Actualizar</button>
                     </div>
                 </div>
             </div>
@@ -174,10 +225,10 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                             </div>
                         </div>
                         <div class="row">
-                         <div class="form-group col-md-12" id="descripcion_sesion_error">
-                            <label for="descripcion_sesion">Descripción</label>
-                            <input type="text" class="form-control" id="descripcion_sesion" placeholder="Descripción" maxlength="100">
-                        </div>
+                            <div class="form-group col-md-12" id="descripcion_sesion_error">
+                                <label for="descripcion_sesion">Descripción</label>
+                                <input type="text" class="form-control" id="descripcion_sesion" placeholder="Descripción" maxlength="100">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -8,7 +8,7 @@ class MS
 {
 	
 	//Crear Usuario
-	public function crearModulo($descripcion,$id_usuario){
+	public function crearModulo($nombre,$icono,$descripcion,$id_usuario){
 
 		$conexion = new Database();
 
@@ -16,40 +16,58 @@ class MS
 
 		$c->beginTransaction();
 
+		$data_consulta = [
+			'nombre' => $nombre,
+		];
+		
 		$data = [
+			'nombre' => $nombre,
+			'icono' => $icono,
 			'descripcion' => $descripcion,
 			'id_usuario'=>$id_usuario,
 		];
 
-		$sql = "INSERT INTO usuarios.modulos (
+		$consulta = "SELECT id FROM usuarios.modulos WHERE nombre = :nombre";
+
+		$sth = $c->prepare($consulta);
+		$sth->execute($data_consulta);
+		$resultado = $sth->fetch(PDO::FETCH_ASSOC);
+
+		if($resultado == null){
+
+			$sql = "INSERT INTO usuarios.modulos (
 									descripcion, 
-									estatus, 
+									estatus,
+									nombre, 
+									icono,
 									fecha_creacion, 
 									usuario_id)
 					VALUES (:descripcion,
 							false,
+							:nombre,
+							:icono,
 							'now()',
 							:id_usuario)";
 		
-		$sth = $c->prepare($sql);
+			$sth = $c->prepare($sql);
 
-		if($sth->execute($data)){
-			$c->commit();
-			$result = 1;
-		}
-		else{
-			$error = $c->errorInfo();
-			if($error[0] == 00000){
-				//cedula duplicada
-				$result = 0;
+			if($sth->execute($data)){
+				$c->commit();
+				$result = 1;
 			}
-			else{
-				//otro error
+			else
+			{
+				$c->errorInfo();
+				//error
 				$result = 2;
 			}
 		}
+		else{
+			//ya existe el nombre
+			$result = 3;
+		}
 
-		$conexion->disconnec();
+		$conexion->disconnec();	
 		
 		return $result;
 	}
@@ -62,7 +80,9 @@ class MS
 		$c = $conexion->conectar();
 
 		$sql = "SELECT 
-					m.id, 
+					m.id,
+					m.icono,
+					m.nombre, 
 					m.estatus, 
 					m.descripcion					
 				FROM usuarios.modulos m 				
@@ -126,6 +146,10 @@ class MS
 
 		$c->beginTransaction();
 
+		$data_consulta = [
+			'nombre' => $nombre,
+		];
+		
 		$data = [
 			'nombre' => $nombre,
 			'icono' => $icono,
@@ -133,9 +157,16 @@ class MS
 			'id_modulo' => $id_modulo,
 			'id_usuario' => $id_usuario,
 		];
-		
 
-		$sql = "INSERT INTO usuarios.secciones (
+		$consulta = "SELECT id FROM usuarios.secciones WHERE nombre = :nombre";
+
+		$sth = $c->prepare($consulta);
+		$sth->execute($data_consulta);
+		$resultado = $sth->fetch(PDO::FETCH_ASSOC);
+		
+		if($resultado == null){
+
+			$sql = "INSERT INTO usuarios.secciones (
 									nombre, 
 									icono, 
 									descripcion, 
@@ -143,24 +174,92 @@ class MS
 									estatus, 
 									fecha_creacion,
 									usuario_id)
-					VALUES (:nombre,
-							:icono,
-							:descripcion,
-							:id_modulo,
-							false,
-							'now()',
-							:id_usuario)";
+							VALUES (:nombre,
+									:icono,
+									:descripcion,
+									:id_modulo,
+									false,
+									'now()',
+									:id_usuario)";
 
-		$sth = $c->prepare($sql);		
+			$sth = $c->prepare($sql);
 
-		if($sth->execute($data)){
-			$c->commit();
-			$result = 1;
+			if($sth->execute($data)){
+				$c->commit();
+				$result = 1;
+			}
+			else
+			{
+				$c->errorInfo();
+				//error
+				$result = 2;
+			}
 		}
 		else{
-			$result = 0;
+			//ya existe el nombre
+			$result = 3;
 		}
 
+		$conexion->disconnec();
+		
+		return $result;
+	}
+	//actualizar modulo
+	function actualizarModulo($descripcion,$nombre,$icono,$id_modulo,$id_usuario){
+
+		$conexion = new Database();
+
+		$c = $conexion->conectar();
+
+		$c->beginTransaction();
+
+		$data_consulta = [
+			'nombre' => $nombre,
+			'id_modulo' => $id_modulo,
+		];
+		
+		$data = [
+			'nombre' => $nombre,
+			'icono' => $icono,
+			'descripcion' => $descripcion,
+			'id_modulo' => $id_modulo,
+			'id_usuario' => $id_usuario,
+		];
+
+		$consulta = "SELECT id FROM usuarios.modulos WHERE nombre = :nombre AND id <> :id_modulo";
+
+		$sth = $c->prepare($consulta);
+		$sth->execute($data_consulta);
+		$resultado = $sth->fetch(PDO::FETCH_ASSOC);
+
+		if($resultado == null){
+
+			$sql = "UPDATE usuarios.modulos SET 
+						nombre = :nombre, 
+						icono = :icono,
+						descripcion = :descripcion,
+						fecha_modificacion = 'now()',
+						usuario_id = :id_usuario
+					WHERE id = :id_modulo";
+
+			$sth = $c->prepare($sql);
+
+			if($sth->execute($data)){
+				$c->commit();
+				$result = 1;
+			}
+			else
+			{
+				$c->errorInfo();
+				//error
+				$result = 2;
+			}
+		}
+		else{
+			//ya existe el nombre
+			$result = 3;
+		}
+		
 		$conexion->disconnec();
 		
 		return $result;

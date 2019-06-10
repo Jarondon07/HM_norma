@@ -36,13 +36,26 @@ $(function(){
         }
     })
 
+    $("#boton_editar_modulo").on("click",(e)=>{
+        updateModulo()
+    });
 
+    $("#from_editar_modulo").on("keypress",(e)=>{
+
+        if(e.keyCode === 13){
+            updateModulo();
+        }
+    })
+
+    
 
 	
 });
 
 var capt_modulo = {
     cod : null,
+    nombre : null,
+    icono : null, 
     descripcion : null,
 };
 
@@ -50,13 +63,27 @@ var capt_modulo = {
 function guardarModulo(){
 	console.log("guardar modulo");
 
-	let descripcion = $("#descripcion").val().trim();
+ 	let descripcion = $("#descripcion_modulo").val().trim(),
+    nombre = $("#nombre_modulo").val().trim(),
+    icono = $("#icono_modulo").val().trim();
 
 	$(".form-group").removeClass('has-error');
 
+    if(nombre.length === 0){
+        alerta_mensaje('warning', 'Debe ingresar el nombre del Modulo', $("#mensaje_modal_crear"));
+        $("#nombre_modulo_error").addClass('has-error');
+        return;
+    }
+
+    if(icono.length === 0){
+        alerta_mensaje('warning', 'Debe ingresar el icono del Modulo', $("#mensaje_modal_crear"));
+        $("#icono_modulo_error").addClass('has-error');
+        return;
+    }
+
 	if(descripcion.length === 0){
 		alerta_mensaje('warning', 'Debe ingresar la descripcion del Modulo', $("#mensaje_modal_crear"));
-		$("#descripcion_error").addClass('has-error');
+		$("#descripcion_modulo_error").addClass('has-error');
 		return;
 	}
 
@@ -69,6 +96,8 @@ function guardarModulo(){
         "cache": false,
         "data": {
         	"tipo_accion": 1,
+            "nombre" : nombre,
+            "icono" : icono,
 			"descripcion" : descripcion,
     	},
     	"beforeSend" : function() {
@@ -77,7 +106,7 @@ function guardarModulo(){
         },
     };
 
-
+    
     $.ajax(settings)
     .done(function(data, textStatus, jqXHR){
 
@@ -90,10 +119,11 @@ function guardarModulo(){
 				alerta_mensaje('success', 'Modulo Registrado', $("#mensaje"));
 				$(".form-control").val("");
     		break;
-    		case 0:
-    			alerta_mensaje('danger', 'Numero de documento ya registrado', $("#mensaje_modal_crear"));
-    			$('#guardar_modulo').html('Guardar');
-    		break;
+    		case 3:
+                alerta_mensaje('danger', 'Nombre de modulo ya se encuentra registrado', $("#mensaje_modal_crear"));
+                $("#nombre_modulo_error").addClass('has-error');
+                $('#guardar_modulo').html('Guardar');
+            break;
     		default:
     			alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_modal_crear"));
     			$('#guardar_modulo').html('Guardar');
@@ -103,7 +133,7 @@ function guardarModulo(){
     })
     .fail(function(jqXHR, textStatus, errorThrown){
     	//console.log("fallo el envio")
-    	$('#guardar_usuario').html('Guardar');  
+    	$('#guardar_modulo').html('Guardar');  
     	alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_modal_crear"));
     });
     hideLoader();
@@ -151,7 +181,7 @@ function buscarModulo(loandig){
                 let checked = (data.estatus == true)?'checked':'';
 	    		let fila = '';
 	    		fila += '<tr>';
-	    			fila += '<td>'+data.descripcion+'</td>';
+	    			fila += '<td>'+data.nombre+'</td>';
 	    			fila += '<td class="text-center">';
                         fila += '<label class="switch">';
                             fila += '<input type="checkbox" onclick="cambiar_estatus_modelo('+data.id+')" id="cambio'+data.id+'" '+checked+'>';
@@ -160,7 +190,7 @@ function buscarModulo(loandig){
                     fila += '</td>';
 	    			fila += '<td class="text-center">';
                         fila += '<button type="button" onclick="gestionar_modulo('+data.id+',\''+data.descripcion+'\')" title="Gestionar Secciones" class="btn btn-info btn-circle"><i class="fa fa-exchange"></i></button>&nbsp;';
-                        fila += '<button type="button" title="Editar Modulo" class="btn btn-success btn-circle"><i class="fa fa-refresh"></i></button>&nbsp;';
+                        fila += '<button type="button" title="Editar Modulo" data-toggle="modal" data-target="#editar_modulo" onclick="editar_modulo('+data.id+',\''+data.nombre+'\',\''+data.icono+'\',\''+data.descripcion+'\')" class="btn btn-success btn-circle"><i class="fa fa-refresh"></i></button>&nbsp;';
                         fila += '<button type="button" title="Eliminar Secciones" class="btn btn-danger btn-circle"><i class="fa fa-remove"></i></button>';
                     fila += '</td>';
 	    			    			
@@ -297,7 +327,6 @@ function guardarSesion(){
         return;
     }
     
-
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -344,6 +373,99 @@ function guardarSesion(){
     .fail(function(jqXHR, textStatus, errorThrown){
         //console.log("fallo el envio")
         $('#guardar_sesion').html('Guardar');  
+        alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_modal_sesion_crear"));
+    });
+    hideLoader();
+}
+//editar modulo
+function editar_modulo(id_modulo,nombre,icono,descripcion){
+
+    capt_modulo = {
+        cod: id_modulo,
+        nombre : nombre,
+        icono : icono, 
+        descripcion : descripcion,
+    };
+    
+    $("#editar_nombre_modulo").val(Object.values(capt_modulo)[1]);
+    $("#editar_icono_modulo").val(Object.values(capt_modulo)[2]);
+    $("#editar_descripcion_modulo").val(Object.values(capt_modulo)[3]);
+}
+
+//Actualziar Modulo
+function updateModulo(){
+
+    let id_modulo = Object.values(capt_modulo)[0],
+    nombre = $("#editar_nombre_modulo").val().trim(),
+    icono = $("#editar_icono_modulo").val().trim(),
+    descripcion = $("#editar_descripcion_modulo").val().trim();
+
+    if(nombre.length === 0){
+        alerta_mensaje('warning', 'Debe ingresar el Nombre del modulo', $("#mensaje_modal_editar"));
+        $("#nombre_editar_modulo_error").addClass('has-error');
+        return;
+    }
+
+    if(icono.length === 0){
+        alerta_mensaje('warning', 'Debe ingresar el Icono del modulo', $("#mensaje_modal_editar"));
+        $("#icono_editar_modulo_error").addClass('has-error');
+        return;
+    }
+
+    if(descripcion.length === 0){
+        alerta_mensaje('warning', 'Debe ingresar la Descripcion del modulo', $("#mensaje_modal_editar"));
+        $("#descripcion_editar_modulo_error").addClass('has-error');
+        return;
+    }
+
+     var settings = {
+        "async": true,
+        "crossDomain": true,
+        "type": "POST",
+        "dataType": "json",
+        "url": url_api+"modulo_seccionesControlador.php",
+        "cache": false,
+        "data": {
+            "tipo_accion": 5,
+            "descripcion" : descripcion,
+            "nombre": nombre,
+            "icono": icono,
+            "id_modulo": id_modulo,
+        },
+        "beforeSend" : function() {
+            $('#boton_editar_modulo').html('Actualizando.....');     
+            showLoader();
+        },
+    };
+
+    $.ajax(settings)
+    .done(function(data, textStatus, jqXHR){
+
+        console.log(data);
+        switch(data){
+            case 1:
+                $('#boton_editar_modulo').html('Actualizar');
+                buscarModulo(1);
+                $("#editar_modulo").modal('hide');
+                alerta_mensaje('success', 'Modulo Actualziado', $("#mensaje"));
+                $(".form-control").val("");
+            break;
+            case 3:
+                alerta_mensaje('danger', 'Nombre Modulo ya resgistrado', $("#mensaje_modal_editar"));
+                $('#boton_editar_modulo').html('Actualizar');
+            break;
+
+
+            default:
+                alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_modal_editar"));
+                $('#boton_editar_modulo').html('Actualizar');
+            break;
+        }
+        
+    })
+    .fail(function(jqXHR, textStatus, errorThrown){
+        //console.log("fallo el envio")
+        $('#boton_editar_modulo').html('Actualizar');  
         alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_modal_sesion_crear"));
     });
     hideLoader();
