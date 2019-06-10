@@ -127,36 +127,38 @@ class MS
 		$c->beginTransaction();
 
 		$data = [
+			'nombre' => $nombre,
+			'icono' => $icono,
 			'descripcion' => $descripcion,
-			'id_usuario'=>$id_usuario,
+			'id_modulo' => $id_modulo,
+			'id_usuario' => $id_usuario,
 		];
+		
 
-		$sql = "INSERT INTO usuarios.modulos (
+		$sql = "INSERT INTO usuarios.secciones (
+									nombre, 
+									icono, 
 									descripcion, 
+									modulo_id, 
 									estatus, 
-									fecha_creacion, 
+									fecha_creacion,
 									usuario_id)
-					VALUES (:descripcion,
+					VALUES (:nombre,
+							:icono,
+							:descripcion,
+							:id_modulo,
 							false,
 							'now()',
 							:id_usuario)";
-		
-		$sth = $c->prepare($sql);
+
+		$sth = $c->prepare($sql);		
 
 		if($sth->execute($data)){
 			$c->commit();
 			$result = 1;
 		}
 		else{
-			$error = $c->errorInfo();
-			if($error[0] == 00000){
-				//cedula duplicada
-				$result = 0;
-			}
-			else{
-				//otro error
-				$result = 2;
-			}
+			$result = 0;
 		}
 
 		$conexion->disconnec();

@@ -72,7 +72,7 @@ if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::CrearS
 
     
     header('Content-type: application/json; charset=utf-8');
-    echo json_encode($cambiarEstatusModulos);
+    echo json_encode($result);
     exit();
 }
 
