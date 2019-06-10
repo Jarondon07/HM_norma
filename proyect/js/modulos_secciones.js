@@ -271,21 +271,32 @@ function buscar_sesion(){
 function guardarSesion(){
     console.log("guardar sesion");
 
-    let descripcion = $("#descripcion_sesion").val().trim();
+    let descripcion = $("#descripcion_sesion").val().trim(),
+    nombre = $("#nombre_sesion").val().trim(),
+    icono = $("#icono_sesion").val().trim();
 
     id_modulo = Object.values(capt_modulo)[0];
 
-    console.log(id_modulo);
-    return;
-
-
     $(".form-group").removeClass('has-error');
 
+    if(nombre.length === 0){
+        alerta_mensaje('warning', 'Debe ingresar el Nombre de la sesion', $("#mensaje_modal_sesion_crear"));
+        $("#nombre_sesion_error").addClass('has-error');
+        return;
+    }
+
+    if(icono.length === 0){
+        alerta_mensaje('warning', 'Debe ingresar el Icono de la sesion', $("#mensaje_modal_sesion_crear"));
+        $("#icono_sesion_error").addClass('has-error');
+        return;
+    }
+
     if(descripcion.length === 0){
-        alerta_mensaje('warning', 'Debe ingresar la descripcion de la sesion', $("#mensaje_modal_sesion_crear"));
+        alerta_mensaje('warning', 'Debe ingresar la Descripcion de la sesion', $("#mensaje_modal_sesion_crear"));
         $("#descripcion_sesion_error").addClass('has-error');
         return;
     }
+    
 
     var settings = {
         "async": true,
@@ -297,13 +308,15 @@ function guardarSesion(){
         "data": {
             "tipo_accion": 4,
             "descripcion" : descripcion,
+            "nombre": nombre,
+            "icono": icono,
+            "id_modulo": id_modulo,
         },
         "beforeSend" : function() {
             $('#guardar_sesion').html('Guardando.....');     
             showLoader();
         },
     };
-
 
     $.ajax(settings)
     .done(function(data, textStatus, jqXHR){

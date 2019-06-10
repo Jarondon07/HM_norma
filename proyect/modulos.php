@@ -135,7 +135,7 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                         <h5 class="modal-title" id="modal_crear_modulo">Crear Modulo</h5>
                     </div>
                     <div class="modal-body" id="from_crear_modulo">
-                        <div class="form-row">
+                        <div class="row">
                             <div id="mensaje_modal_crear"></div>
                             <div class="form-group col-md-6" id="descripcion_error">
                                 <label for="descripcion">Nombre Modulo</label>
@@ -158,17 +158,31 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                         <h5 class="modal-title" id="modal_crear_sesion">Crear Sesion</h5>
                     </div>
                     <div class="modal-body" id="from_crear_sesion">
-                        <div class="form-row">
-                            <div id="mensaje_modal_sesion_crear"></div>
-                            <div class="form-group col-md-6" id="descripcion_sesion_error">
-                                <label for="descripcion_sesion">Nombre sesion</label>
-                                <input type="text" class="form-control" id="descripcion_sesion" placeholder="Descripcion" maxlength="25"  autofocus>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <div id="mensaje_modal_sesion_crear"></div>
+                            </div>   
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6" id="nombre_sesion_error">
+                                <label for="nombre_sesion">Nombre</label>
+                                <input type="text" class="form-control" id="nombre_sesion" placeholder="Descripcion" maxlength="25" autofocus>
                             </div>
+                            <div class="form-group col-md-6" id="icono_sesion_error">
+                                <label for="icono_sesion">icono</label>
+                                <input type="text" class="form-control" id="icono_sesion" placeholder="fa fa-ejemplo" maxlength="25">
+                            </div>
+                        </div>
+                        <div class="row">
+                         <div class="form-group col-md-12" id="descripcion_sesion_error">
+                            <label for="descripcion_sesion">Descripción</label>
+                            <input type="text" class="form-control" id="descripcion_sesion" placeholder="Descripción" maxlength="100">
+                        </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button id="guardar_sesion" type="button" class="btn btn-primary">Guardar</button>
+                        <button type="button" class="btn btn-primary" id="guardar_sesion">Guardar</button>
                     </div>
                 </div>
             </div>

@@ -9,8 +9,15 @@ $db = new MS();
 session_start();
 $id_usuario = $_SESSION['id'];
 
+class TipoRegistro{
+    const CrearModulo = 1;
+    const BuscarModulo = 2;
+    const CambioEstatusModulo = 3;
+    const CrearSesion = 4;
+}
+
 /** Crear usuario **/
-if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == 1){
+if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::CrearModulo){
         
     $descripcion = $_POST['descripcion'];
 
@@ -22,7 +29,7 @@ if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == 1){
 }
 
 /** buscar modulos **/
-if(isset($_GET['tipo_accion']) && $_GET['tipo_accion'] == 2){
+if(isset($_GET['tipo_accion']) && $_GET['tipo_accion'] == TipoRegistro::BuscarModulo){
     
     $listaModulos = $db->buscarModulo();
 
@@ -39,7 +46,7 @@ if(isset($_GET['tipo_accion']) && $_GET['tipo_accion'] == 2){
 }
 
 /** cambiar estatus del modulo **/
-if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == 3){
+if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::CambioEstatusModulo){
     
     $id = $_POST['id'];
     $estatus = $_POST['estatus'];
@@ -53,14 +60,15 @@ if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == 3){
 }
 
 /** asignar sesiones a modulos **/
-if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == 4){
+if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::CrearSesion){
 
-    print_r($_POST);die();
+    $descripcion = $_POST['descripcion'];
+    $nombre = $_POST['nombre'];
+    $icono=  $_POST['icono'];
+    $id_modulo = $_POST['id_modulo'];
 
-    $id = $_POST['id'];
-    $estatus = $_POST['estatus'];
-
-    $cambiarEstatusModulos = $db->estatusModulo($id,$estatus,$fecha,$id_usuario);
+    
+    $result = $db->crearSesion($descripcion,$nombre,$icono,$id_modulo,$id_usuario);
 
     
     header('Content-type: application/json; charset=utf-8');

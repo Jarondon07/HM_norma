@@ -45,7 +45,6 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
             <?php
                 include 'menu.php';
             ?>
-            
 
             <div id="page-wrapper">
                 <div class="container-fluid">
@@ -125,8 +124,12 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                         <h5 class="modal-title" id="exampleModalLongTitle">Crear Usuario</h5>
                     </div>
                     <div class="modal-body" id="from_crear_user">
-                        <div class="form-row">
-                            <div id="mensaje_modal_crear"></div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <div id="mensaje_modal_crear"></div>
+                            </div>   
+                        </div>
+                        <div class="row">
                             <div class="form-group col-md-6" id="documento_error">
                                 <label for="documento">N° de Cedula</label>
                                 <input type="text" class="form-control solo-numero" id="documento" placeholder="Cedula" maxlength="8"  autofocus>
@@ -136,7 +139,7 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                                 <input type="text" class="form-control" id="password" placeholder="Contraseña">
                             </div>-->
                         </div>
-                        <div class="form-row">
+                        <div class="row">
                             <div class="form-group col-md-6" id="primer_nombre_error">
                                 <label for="primer_nombre">Primer Nombre</label>
                                 <input type="text" class="form-control" id="primer_nombre" maxlength="25" placeholder="Primer Nombre">
@@ -146,7 +149,7 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                                 <input type="text" class="form-control" id="segundo_nombre" maxlength="25" placeholder="Segundo Nombre">
                             </div>
                         </div>
-                        <div class="form-row">
+                        <div class="row">
                             <div class="form-group col-md-6" id="primer_apellido_error">
                                 <label for="primer_apellido">Primer Apellido</label>
                                 <input type="text" class="form-control" id="primer_apellido" maxlength="25" placeholder="Primer Apellido">

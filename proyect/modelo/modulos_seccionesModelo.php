@@ -116,4 +116,51 @@ class MS
 		
 		return $result;
 	}
+
+	/** Crear sesion de un modulo **/
+	function crearSesion($descripcion,$nombre,$icono,$id_modulo,$id_usuario){
+
+		$conexion = new Database();
+
+		$c = $conexion->conectar();
+
+		$c->beginTransaction();
+
+		$data = [
+			'descripcion' => $descripcion,
+			'id_usuario'=>$id_usuario,
+		];
+
+		$sql = "INSERT INTO usuarios.modulos (
+									descripcion, 
+									estatus, 
+									fecha_creacion, 
+									usuario_id)
+					VALUES (:descripcion,
+							false,
+							'now()',
+							:id_usuario)";
+		
+		$sth = $c->prepare($sql);
+
+		if($sth->execute($data)){
+			$c->commit();
+			$result = 1;
+		}
+		else{
+			$error = $c->errorInfo();
+			if($error[0] == 00000){
+				//cedula duplicada
+				$result = 0;
+			}
+			else{
+				//otro error
+				$result = 2;
+			}
+		}
+
+		$conexion->disconnec();
+		
+		return $result;
+	}
 }
