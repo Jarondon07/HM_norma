@@ -15,6 +15,7 @@ class TipoRegistro{
     const CambioEstatusModulo = 3;
     const CrearSesion = 4;
     const ActualizarModulo = 5;
+    const BuscarSesion = 6;
 }
 
 /** Crear usuario **/
@@ -91,5 +92,24 @@ if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::Actual
 
     header('Content-type: application/json; charset=utf-8');
     echo json_encode($result);
+    exit();
+}
+
+/** Buscar sesiones de un modulos **/
+if(isset($_GET['tipo_accion']) && $_GET['tipo_accion'] == TipoRegistro::BuscarSesion){
+    
+    $id_modulo = $_GET['id_modulo'];
+
+    $listaSesion = $db->buscarSesion($id_modulo);
+
+    $total = count($listaSesion);
+    
+    $data = [ 
+        "lista" => $listaSesion,
+        "total" => $total 
+    ];
+    
+    header('Content-type: application/json; charset=utf-8');
+    echo json_encode($data);
     exit();
 }

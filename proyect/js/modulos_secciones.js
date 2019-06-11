@@ -189,7 +189,7 @@ function buscarModulo(loandig){
                         fila += '</label>';
                     fila += '</td>';
 	    			fila += '<td class="text-center">';
-                        fila += '<button type="button" onclick="gestionar_modulo('+data.id+',\''+data.descripcion+'\')" title="Gestionar Secciones" class="btn btn-info btn-circle"><i class="fa fa-exchange"></i></button>&nbsp;';
+                        fila += '<button type="button" onclick="gestionar_modulo('+data.id+',\''+data.nombre+'\',\''+data.icono+'\',\''+data.descripcion+'\')" title="Gestionar Secciones" class="btn btn-info btn-circle"><i class="fa fa-exchange"></i></button>&nbsp;';
                         fila += '<button type="button" title="Editar Modulo" data-toggle="modal" data-target="#editar_modulo" onclick="editar_modulo('+data.id+',\''+data.nombre+'\',\''+data.icono+'\',\''+data.descripcion+'\')" class="btn btn-success btn-circle"><i class="fa fa-refresh"></i></button>&nbsp;';
                         fila += '<button type="button" title="Eliminar Secciones" class="btn btn-danger btn-circle"><i class="fa fa-remove"></i></button>';
                     fila += '</td>';
@@ -262,19 +262,21 @@ function cambiar_estatus_modelo(id,loandig){
 }
 
 //asignar secciones a un modulo
-function gestionar_modulo(id_modulo,nombre){
+function gestionar_modulo(id_modulo,nombre,icono,descripcion){
 
     capt_modulo = {
         cod: id_modulo,
-        descripcion: nombre,
+        nombre : nombre,
+        icono : icono, 
+        descripcion : descripcion,
     };
-    //Object.values(capt_modulo)[1]
-    let descripcion = Object.values(capt_modulo)[1];
+
+    let nombre_sesion = Object.values(capt_modulo)[1];
     
     $("#modulos").addClass('oculto');
     $("#secciones").removeClass('oculto');
 
-    $("#detalle_descripcion").html(descripcion);    
+    $("#detalle_descripcion").html(nombre_sesion);  
 
     
     buscar_sesion()
@@ -290,11 +292,77 @@ function atras(){
     $("#secciones").addClass('oculto');
 }
 
-function buscar_sesion(){
+function buscar_sesion(loandig){
+
+    loandig = loandig || 0;
 
     let id_modulo = Object.values(capt_modulo)[0];
 
-    console.log(id_modulo)
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "type": "GET",
+        "dataType": "json",
+        "url": url_api+"modulo_seccionesControlador.php",
+        "cache": false,
+        "data": {
+            "tipo_accion": 6,
+            "id_modulo": id_modulo,
+        },
+        "beforeSend" : function() {
+            (loandig == 0?showLoader():'');
+        },
+    };
+
+    $("#registros_sesion").empty();
+
+    $.ajax(settings)
+    .done(function(data, textStatus, jqXHR){
+
+        let resultado = data;
+        //console.log(resultado);
+        if(resultado.total == 0){
+            let fila = '';
+            fila += '<tr class="text-center">';
+                fila += '<td colspan="4"><strong>NO SE ENCONTRARON SESIONES ASOCIADAS</strong></td>';
+            fila += '</tr>'; 
+            $("#registros_sesion").append(fila);
+        }
+        else
+        {
+
+            resultado.lista.forEach((data,indice,array)=>{
+                //console.log(data);
+                let checked = (data.estatus == true)?'checked':'';
+                let fila = '';
+                fila += '<tr>';
+                    fila += '<td>'+data.nombre_modulo+'</td>';
+                    fila += '<td>'+data.nombre_sesion+'</td>';
+                    fila += '<td class="text-center">';
+                        fila += '<label class="switch">';
+                            fila += '<input type="checkbox" onclick="cambiar_estatus_modelo('+data.id+')" id="cambio'+data.id+'" '+checked+'>';
+                            fila += '<span class="slider round"></span>';
+                        fila += '</label>';
+                    fila += '</td>';
+                    fila += '<td class="text-center">';
+                        fila += '<button type="button" onclick="gestionar_modulo('+data.id+',\''+data.descripcion+'\')" title="Gestionar Secciones" class="btn btn-info btn-circle"><i class="fa fa-exchange"></i></button>&nbsp;';
+                        fila += '<button type="button" title="Editar Modulo" data-toggle="modal" data-target="#editar_modulo" onclick="editar_modulo('+data.id+',\''+data.nombre+'\',\''+data.icono+'\',\''+data.descripcion+'\')" class="btn btn-success btn-circle"><i class="fa fa-refresh"></i></button>&nbsp;';
+                        fila += '<button type="button" title="Eliminar Secciones" class="btn btn-danger btn-circle"><i class="fa fa-remove"></i></button>';
+                    fila += '</td>';
+                                    
+                fila += '</tr>'; 
+                $("#registros_sesion").append(fila);
+            })
+        }
+
+        
+    })
+    .fail(function(jqXHR, textStatus, errorThrown){
+        //console.log("fallo el envio")
+        alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_sesion_gestion"));
+    });
+    hideLoader();
+
 }
 
 //guardar sesion
@@ -354,7 +422,7 @@ function guardarSesion(){
         switch(data){
             case 1:
                 $('#guardar_sesion').html('Guardar');
-                buscarModulo();
+                buscar_sesion();
                 $("#crear_sesion").modal('hide');
                 alerta_mensaje('success', 'Modulo Registrado', $("#mensaje"));
                 $(".form-control").val("");

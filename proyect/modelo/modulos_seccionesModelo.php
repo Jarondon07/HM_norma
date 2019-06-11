@@ -264,4 +264,39 @@ class MS
 		
 		return $result;
 	}
+
+	//buscar sesion de un modulo
+	public function buscarSesion($id_modulo){
+
+		$conexion = new Database();
+
+		$c = $conexion->conectar();
+
+		$data_consulta = [
+			'id_modulo' => $id_modulo,
+		];
+
+		$sql = "SELECT 
+					sec.id,
+					modu.nombre AS nombre_modulo,
+					sec.nombre AS nombre_sesion,
+					sec.estatus,
+					sec.icono,
+					sec.descripcion
+				FROM usuarios.secciones sec
+				INNER JOIN usuarios.modulos modu ON modu.id = sec.modulo_id
+				WHERE sec.modulo_id = :id_modulo 
+				ORDER BY sec.nombre ASC";
+		
+		$sth = $c->prepare($sql);
+				
+		$sth->execute($data_consulta);
+		
+		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
+		
+		$conexion->disconnec();
+		
+		return $result;
+		
+	}
 }

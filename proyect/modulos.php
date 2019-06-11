@@ -66,7 +66,7 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                                 </div>
                                 <div class="panel-body">
                                     <div id="mensaje"></div>
-                                    <div class="row" ">
+                                    <div class="row">
                                         <div class=" col-lg-12">
                                             <div class="table-responsive">
                                                 <table class="table table-striped table-bordered table-hover" style="margin-top: 20px;">
@@ -113,7 +113,31 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="panel-body">
+                                    <div id="mensaje_sesion_gestion"></div>
+                                    <div class="row">
+                                        <div class=" col-lg-12">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered table-hover" style="margin-top: 20px;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Modulo</th>
+                                                            <th>Sesion</th>
+                                                            <th>Estatus</th>
+                                                            <th>Accion</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="registros_sesion">
+                                                        <!-- aqui van los registros -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                    
+                                <div class="panel-footer text-center">
+                                    HM
+                                </div>
                             </div>
                         </div>
                     </div>
