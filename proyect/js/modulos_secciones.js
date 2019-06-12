@@ -340,7 +340,7 @@ function buscar_sesion(loandig){
                     fila += '<td>'+data.nombre_sesion+'</td>';
                     fila += '<td class="text-center">';
                         fila += '<label class="switch">';
-                            fila += '<input type="checkbox" onclick="cambiar_estatus_modelo('+data.id+')" id="cambio'+data.id+'" '+checked+'>';
+                            fila += '<input type="checkbox" onclick="cambiar_estatus_sesion('+data.id+')" id="cambio_sesion'+data.id+'" '+checked+'>';
                             fila += '<span class="slider round"></span>';
                         fila += '</label>';
                     fila += '</td>';
@@ -422,7 +422,7 @@ function guardarSesion(){
         switch(data){
             case 1:
                 $('#guardar_sesion').html('Guardar');
-                buscar_sesion();
+                buscar_sesion(1);
                 $("#crear_sesion").modal('hide');
                 alerta_mensaje('success', 'Modulo Registrado', $("#mensaje"));
                 $(".form-control").val("");
@@ -535,6 +535,56 @@ function updateModulo(){
         //console.log("fallo el envio")
         $('#boton_editar_modulo').html('Actualizar');  
         alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_modal_sesion_crear"));
+    });
+    hideLoader();
+}
+
+//cambiar estatus de una sesion 
+function cambiar_estatus_sesion(id_sesion,loandig){
+
+    loandig = loandig || 0;
+    
+    let estatus = $("#cambio_sesion"+id_sesion+"")[0].checked;
+
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "type": "POST",
+        "dataType": "json",
+        "url": url_api+"modulo_seccionesControlador.php",
+        "cache": false,
+        "data": {
+            "tipo_accion": 7,
+            "id": id_sesion,
+            "estatus": estatus,
+        },
+        "beforeSend" : function() {
+            (loandig == 0?showLoader():'');
+        },
+    };
+    $.ajax(settings)
+    .done(function(data, textStatus, jqXHR){
+
+        //console.log(data);
+
+        switch(data){
+            case 1:
+                buscar_sesion(1);
+                alerta_mensaje('success', 'Sesion '+(estatus == true ?'Activada':'Desactivada')+'', $("#mensaje_sesion_gestion"));
+            break;
+            case 0:
+                alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_sesion_gestion"));
+            break;
+            default:
+                alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_sesion_gestion"));
+                $('#login').html('Guardar');
+            break;
+        }
+        
+    })
+    .fail(function(jqXHR, textStatus, errorThrown){
+        //console.log("fallo el envio")
+        alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_sesion_gestion"));
     });
     hideLoader();
 }
