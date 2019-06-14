@@ -17,6 +17,7 @@ class TipoRegistro{
     const ActualizarModulo = 5;
     const BuscarSesion = 6;
     const CambioEstatusSesion = 7;
+    const ActualizarSesion = 8;
 }
 
 /** Crear usuario **/
@@ -126,5 +127,19 @@ if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::Cambio
     
     header('Content-type: application/json; charset=utf-8');
     echo json_encode($cambiarEstatusSesion);
+    exit();
+}
+/** Actualizar sesion **/
+if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::ActualizarSesion){
+
+    $descripcion = $_POST['descripcion'];
+    $nombre = $_POST['nombre'];
+    $icono=  $_POST['icono'];
+    $id_sesion = $_POST['id_sesion'];
+    
+    $result = $db->actualizarSesion($descripcion,$nombre,$icono,$id_sesion,$id_usuario);
+
+    header('Content-type: application/json; charset=utf-8');
+    echo json_encode($result);
     exit();
 }

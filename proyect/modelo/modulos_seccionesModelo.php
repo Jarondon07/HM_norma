@@ -336,4 +336,65 @@ class MS
 		
 		return $result;
 	}	
+
+	//actualizar sesion
+	function actualizarSesion($descripcion,$nombre,$icono,$id_sesion,$id_usuario){
+
+		$conexion = new Database();
+
+		$c = $conexion->conectar();
+
+		$c->beginTransaction();
+
+		$data_consulta = [
+			'nombre' => $nombre,
+			'id_sesion' => $id_sesion,
+		];
+
+		$data = [
+			'nombre' => $nombre,
+			'icono' => $icono,
+			'descripcion' => $descripcion,
+			'id_sesion' => $id_sesion,
+			'id_usuario' => $id_usuario,
+		];
+
+		$consulta = "SELECT id FROM usuarios.secciones WHERE nombre = :nombre AND id <> :id_sesion";
+
+		$sth = $c->prepare($consulta);
+		$sth->execute($data_consulta);
+		$resultado = $sth->fetch(PDO::FETCH_ASSOC);
+
+		if($resultado == null){
+
+			$sql = "UPDATE usuarios.secciones SET 
+						nombre = :nombre, 
+						icono = :icono,
+						descripcion = :descripcion,
+						fecha_modificacion = 'now()',
+						usuario_id = :id_usuario
+					WHERE id = :id_sesion";
+
+			$sth = $c->prepare($sql);
+
+			if($sth->execute($data)){
+				$c->commit();
+				$result = 1;
+			}
+			else
+			{
+				$c->errorInfo();
+				//error
+				$result = 2;
+			}
+		}
+		else{
+			//ya existe el nombre
+			$result = 3;
+		}
+		
+		$conexion->disconnec();
+		
+		return $result;
+	}
 }
