@@ -18,6 +18,7 @@ class TipoRegistro{
     const BuscarSesion = 6;
     const CambioEstatusSesion = 7;
     const ActualizarSesion = 8;
+    const EliminarRegistro = 9;
 }
 
 /** Crear usuario **/
@@ -72,9 +73,9 @@ if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::CrearS
     $nombre = $_POST['nombre'];
     $icono=  $_POST['icono'];
     $id_modulo = $_POST['id_modulo'];
-
+    $archivo = $_POST['archivo'];
     
-    $result = $db->crearSesion($descripcion,$nombre,$icono,$id_modulo,$id_usuario);
+    $result = $db->crearSesion($descripcion,$nombre,$icono,$id_modulo,$id_usuario,$archivo);
 
     
     header('Content-type: application/json; charset=utf-8');
@@ -139,6 +140,29 @@ if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::Actual
     
     $result = $db->actualizarSesion($descripcion,$nombre,$icono,$id_sesion,$id_usuario);
 
+    header('Content-type: application/json; charset=utf-8');
+    echo json_encode($result);
+    exit();
+}
+
+/** Eliminar **/
+if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::EliminarRegistro){
+
+
+    if(!$_POST['id_sesion']){
+        $id_modulo = $_POST['id_modulo'];
+
+        $result = $db->eliminarModulo($id_modulo,$id_usuario);
+        
+    }else{
+        $id_sesion = $_POST['id_sesion'];
+
+        $result = $db->eliminarSesion($id_sesion,$id_usuario);
+    }
+
+    print_r($result);die();
+
+    
     header('Content-type: application/json; charset=utf-8');
     echo json_encode($result);
     exit();

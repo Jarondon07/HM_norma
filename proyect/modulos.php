@@ -248,12 +248,21 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                                 <input type="text" class="form-control" id="icono_sesion" placeholder="fa fa-ejemplo" maxlength="25">
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6" id="archivo_sesion_error">
+                                <label for="archivo_sesion">Link Archivo</label>
+                                <input type="text" class="form-control" id="archivo_sesion" placeholder="Archivo Ejemplo: index.php" maxlength="30">
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="form-group col-md-12" id="descripcion_sesion_error">
                                 <label for="descripcion_sesion">Descripción</label>
                                 <input type="text" class="form-control" id="descripcion_sesion" placeholder="Descripción" maxlength="100">
                             </div>
                         </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -262,6 +271,29 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                 </div>
             </div>
         </div>
+
+        <!-- CONFIRMAR -->
+        <div class="modal fade" id="confirmar_modal" tabindex="-1" role="dialog" aria-labelledby="modal_crear_sesion" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal_confirmar">Confirmar Accion</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label id="detalle_mensaje"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="aceptar_confirmar">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <div class="modal fade" id="editar_sesion" tabindex="-1" role="dialog" aria-labelledby="modal_editar_sesion" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">

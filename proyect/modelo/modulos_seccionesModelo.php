@@ -138,7 +138,7 @@ class MS
 	}
 
 	/** Crear sesion de un modulo **/
-	function crearSesion($descripcion,$nombre,$icono,$id_modulo,$id_usuario){
+	function crearSesion($descripcion,$nombre,$icono,$id_modulo,$id_usuario,$archivo){
 
 		$conexion = new Database();
 
@@ -156,6 +156,7 @@ class MS
 			'descripcion' => $descripcion,
 			'id_modulo' => $id_modulo,
 			'id_usuario' => $id_usuario,
+			'archivo' => $archivo,
 		];
 
 		$consulta = "SELECT id FROM usuarios.secciones WHERE nombre = :nombre";
@@ -173,14 +174,16 @@ class MS
 									modulo_id, 
 									estatus, 
 									fecha_creacion,
-									usuario_id)
+									usuario_id,
+									archivo)
 							VALUES (:nombre,
 									:icono,
 									:descripcion,
 									:id_modulo,
 									false,
 									'now()',
-									:id_usuario)";
+									:id_usuario,
+									:archivo)";
 
 			$sth = $c->prepare($sql);
 
@@ -396,5 +399,16 @@ class MS
 		$conexion->disconnec();
 		
 		return $result;
+	}
+
+	//eliminar modulo
+	function eliminarModulo($id_modulo,$id_usuario){
+		print_r($id_modulo);die();
+
+	}
+
+	//eliminar sesion
+	function eliminarSesion($id_sesion,$id_usuario){
+		print_r($id_sesion);die();
 	}
 }

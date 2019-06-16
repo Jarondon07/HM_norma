@@ -58,9 +58,9 @@ $(function(){
         }
     })
 
-    
-
-    
+    $("#aceptar_confirmar").on("click",(e)=>{
+        eliminar();
+    });
 
 	
 });
@@ -74,6 +74,7 @@ var capt_modulo = {
 
 var capt_sesion = {
     cod_sesion : null,
+    nombre : null,
 }
 
 //guardar modulo
@@ -208,7 +209,7 @@ function buscarModulo(loandig){
 	    			fila += '<td class="text-center">';
                         fila += '<button type="button" onclick="gestionar_modulo('+data.id+',\''+data.nombre+'\',\''+data.icono+'\',\''+data.descripcion+'\')" title="Gestionar Secciones" class="btn btn-info btn-circle"><i class="fa fa-exchange"></i></button>&nbsp;';
                         fila += '<button type="button" title="Editar Modulo" data-toggle="modal" data-target="#editar_modulo" onclick="editar_modulo('+data.id+',\''+data.nombre+'\',\''+data.icono+'\',\''+data.descripcion+'\')" class="btn btn-success btn-circle"><i class="fa fa-refresh"></i></button>&nbsp;';
-                        fila += '<button type="button" title="Eliminar Secciones" onclick="eliminar_sesion()" class="btn btn-danger btn-circle"><i class="fa fa-remove"></i></button>';
+                        fila += '<button type="button" title="Eliminar Modulo" data-toggle="modal" data-target="#confirmar_modal" onclick="confirmar_eliminar('+data.id+',\''+data.nombre+'\',1)" class="btn btn-danger btn-circle"><i class="fa fa-remove"></i></button>';
                     fila += '</td>';
 	    			    			
 	    		fila += '</tr>'; 
@@ -230,9 +231,6 @@ function cambiar_estatus_modelo(id,loandig){
     loandig = loandig || 0;
     
     let estatus = $("#cambio"+id+"")[0].checked;
-
-
-    //console.log(estatus);
 
 
     var settings = {
@@ -301,7 +299,11 @@ function gestionar_modulo(id_modulo,nombre,icono,descripcion){
 
 //atras
 function atras(){
-    console.log("atras");
+
+    capt_sesion = {
+        cod_sesion : null,
+        nombre : null,
+    }
 
     buscarModulo();
 
@@ -363,7 +365,7 @@ function buscar_sesion(loandig){
                     fila += '</td>';
                     fila += '<td class="text-center">';
                         fila += '<button type="button" title="Editar Modulo" data-toggle="modal" data-target="#editar_sesion" onclick="editar_sesion('+data.id+',\''+data.nombre_sesion+'\',\''+data.icono+'\',\''+data.descripcion+'\')" class="btn btn-success btn-circle"><i class="fa fa-refresh"></i></button>&nbsp;';
-                        fila += '<button type="button" title="Eliminar Secciones" class="btn btn-danger btn-circle"><i class="fa fa-remove"></i></button>';
+                        fila += '<button type="button" title="Eliminar Secciones"  data-toggle="modal" data-target="#confirmar_modal" onclick="confirmar_eliminar('+data.id+',\''+data.nombre_sesion+'\',2)" class="btn btn-danger btn-circle"><i class="fa fa-remove"></i></button>';
                     fila += '</td>';
                                     
                 fila += '</tr>'; 
@@ -387,8 +389,9 @@ function guardarSesion(){
 
     let descripcion = $("#descripcion_sesion").val().trim(),
     nombre = $("#nombre_sesion").val().trim(),
-    icono = $("#icono_sesion").val().trim();
-
+    icono = $("#icono_sesion").val().trim(),
+    archivo = $("#archivo_sesion").val().trim();
+    
     id_modulo = Object.values(capt_modulo)[0];
 
     $(".form-group").removeClass('has-error');
@@ -405,12 +408,18 @@ function guardarSesion(){
         return;
     }
 
+    if(archivo.length === 0){
+        alerta_mensaje('warning', 'Debe ingresar el Archivo de la sesion', $("#mensaje_modal_sesion_crear"));
+        $("#archivo_sesion_error").addClass('has-error');
+        return;
+    }
+
     if(descripcion.length === 0){
         alerta_mensaje('warning', 'Debe ingresar la Descripcion de la sesion', $("#mensaje_modal_sesion_crear"));
         $("#descripcion_sesion_error").addClass('has-error');
         return;
     }
-    
+
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -423,6 +432,7 @@ function guardarSesion(){
             "descripcion" : descripcion,
             "nombre": nombre,
             "icono": icono,
+            "archivo": archivo,
             "id_modulo": id_modulo,
         },
         "beforeSend" : function() {
@@ -623,20 +633,6 @@ function editar_sesion(id,nombre_sesion,icono,descripcion){
     $("#editar_nombre_sesion").val(Object.values(capt_sesion)[1]);
     $("#icono_editar_sesion").val(Object.values(capt_sesion)[2]);
     $("#editar_descripcion_sesion").val(Object.values(capt_sesion)[3]);
-    
-    /*
-    
-
-editar_nombre_sesion
-editar_nombre_sesion
-icono_editar_sesion_error
-editar_sesion_modulo
-descripcion_editar_sesion_error
-editar_descripcion_sesion
-
-
-    */
-
 }
 
 /*** actualizar sesion ***/
@@ -727,4 +723,85 @@ function update_sesion(loandig){
 /** Eliminar sesion de un modulo **/
 function eliminar_sesion(){
     console.log("se quiere eliminar la sesion de este modulo")
+}
+
+/*** Eliminar Modulo ***/
+function confirmar_eliminar(id,nombre,tipo){
+
+    let detalle;
+    if(tipo == 1){
+        detalle = "¿Seguro deseas eliminar el modulo: "+nombre+" ?";
+
+        capt_modulo = {
+            cod : id,
+            nombre : nombre,
+        };
+    }
+    else{
+        detalle = "¿Seguro deseas eliminar la Sesion: "+nombre+" ?";  
+
+        capt_sesion = {
+            cod_sesion: id,
+            nombre: nombre
+        } 
+    }
+
+    $("#detalle_mensaje").html(detalle);
+}
+
+//eliminar sesion o modulo
+function eliminar(loandig){
+
+    loandig = loandig || 0;
+
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "type": "POST",
+        "dataType": "json",
+        "url": url_api+"modulo_seccionesControlador.php",
+        "cache": false,
+        "data": {
+            "tipo_accion": 9,
+            "id_modulo": Object.values(capt_modulo)[0],
+            "id_sesion": Object.values(capt_sesion)[0],
+        },
+        "beforeSend" : function() {
+            (loandig == 0?showLoader():'');
+        },
+    };
+    $.ajax(settings)
+    .done(function(data, textStatus, jqXHR){
+
+        console.log(data);
+        /*switch(data){
+            case 1:
+                $('#boton_editar_sesion').html('Actualizar');
+                buscar_sesion(1);
+                $("#editar_sesion").modal('hide');
+                alerta_mensaje('success', 'Sesion Actualziada', $("#mensaje_sesion_gestion"));
+                $(".form-control").val("");
+            break;
+            case 3:
+                alerta_mensaje('danger', 'Nombre de Sesion ya resgistrado', $("#mensaje_modal_editar_sesion"));
+                $('#boton_editar_sesion').html('Actualizar');
+            break;
+
+
+            default:
+                alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_modal_editar"));
+                $('#boton_editar_sesion').html('Actualizar');
+            break;
+        }*/
+        
+    })
+    .fail(function(jqXHR, textStatus, errorThrown){
+        //console.log("fallo el envio")
+        if(Object.values(capt_sesion)[0] == null){
+            alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje"));
+        }else{
+            alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_sesion_gestion"));
+        }
+    });
+    hideLoader();
 }
