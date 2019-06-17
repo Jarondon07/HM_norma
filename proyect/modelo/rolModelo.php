@@ -68,20 +68,18 @@ class MS
 	}
 
 	//buscar Modulo y secciones
-	public function buscarModulo(){
+	public function buscarRoles(){
 
 		$conexion = new Database();
 
 		$c = $conexion->conectar();
 
 		$sql = "SELECT 
-					m.id,
-					m.icono,
-					m.nombre, 
-					m.estatus, 
-					m.descripcion					
-				FROM usuarios.modulos m 				
-				ORDER BY m.descripcion ASC";
+					r.id,
+					r.descripcion,
+					r.estatus				
+				FROM usuarios.roles r 				
+				ORDER BY r.descripcion ASC";
 		
 		$sth = $c->prepare($sql);
 				
@@ -96,7 +94,7 @@ class MS
 	}
 
 	/** cambiar el estatus del modulo **/
-	function estatusModulo($id,$estatus,$fecha,$id_usuario){
+	function estatusRol($id,$estatus,$fecha,$id_usuario){
 
 		$conexion = new Database();
 
@@ -111,7 +109,7 @@ class MS
 			'id_usuario'=>$id_usuario,
 		];
 
-		$sql = "UPDATE usuarios.modulos SET
+		$sql = "UPDATE usuarios.roles SET
 									estatus = :estatus, 
 									fecha_modificacion = :fecha_modificacion, 
 									usuario_id = :id_usuario
@@ -202,8 +200,8 @@ class MS
 		
 		return $result;
 	}
-	//actualizar modulo
-	function actualizarModulo($descripcion,$nombre,$icono,$id_modulo,$id_usuario){
+	//actualizar Rol
+	function actualizarRol($descripcion,$id,$id_usuario){
 
 		$conexion = new Database();
 
@@ -212,19 +210,17 @@ class MS
 		$c->beginTransaction();
 
 		$data_consulta = [
-			'nombre' => $nombre,
-			'id_modulo' => $id_modulo,
+			'descripcion' => $descripcion,
+			'id' => $id,
 		];
 		
 		$data = [
-			'nombre' => $nombre,
-			'icono' => $icono,
 			'descripcion' => $descripcion,
-			'id_modulo' => $id_modulo,
+			'id' => $id,
 			'id_usuario' => $id_usuario,
 		];
 
-		$consulta = "SELECT id FROM usuarios.modulos WHERE nombre = :nombre AND id <> :id_modulo";
+		$consulta = "SELECT id FROM usuarios.roles WHERE descripcion = :descripcion AND id <> :id";
 
 		$sth = $c->prepare($consulta);
 		$sth->execute($data_consulta);
@@ -232,13 +228,11 @@ class MS
 
 		if($resultado == null){
 
-			$sql = "UPDATE usuarios.modulos SET 
-						nombre = :nombre, 
-						icono = :icono,
-						descripcion = :descripcion,
+			$sql = "UPDATE usuarios.roles SET 
+						descripcion = :descripcion, 
 						fecha_modificacion = 'now()',
 						usuario_id = :id_usuario
-					WHERE id = :id_modulo";
+					WHERE id = :id";
 
 			$sth = $c->prepare($sql);
 
@@ -263,32 +257,70 @@ class MS
 		return $result;
 	}
 
-	//buscar sesion de un modulo
-	public function buscarSesion($id_modulo){
+	//eliminar Rol
+	function eliminarRol($id,$id_usuario){
+		
+		$conexion = new Database();
+
+		$c = $conexion->conectar();
+
+		$c->beginTransaction();
+
+		$data = [
+			'id' => $id,
+		];
+
+		$consulta = "SELECT id FROM usuarios.roles_x_usuarios WHERE rol_id = :id";
+
+		$sth = $c->prepare($consulta);
+		$sth->execute($data);
+		$resultado = $sth->fetch(PDO::FETCH_ASSOC);
+
+		if($resultado == null){
+
+			$sql = "DELETE FROM usuarios.roles WHERE id = :id";
+
+			$sth = $c->prepare($sql);
+
+			if($sth->execute($data)){
+				$c->commit();
+				$result = 1;
+			}
+			else
+			{
+				$c->errorInfo();
+				//error
+				$result = 2;
+			}
+		}
+		else{
+			//tiene usuarios asociados
+			$result = 3;
+		}
+		
+		$conexion->disconnec();
+		
+		return $result;
+
+	}
+
+	//buscar Modulos Activos
+	public function buscarModuloActivos(){
 
 		$conexion = new Database();
 
 		$c = $conexion->conectar();
 
-		$data_consulta = [
-			'id_modulo' => $id_modulo,
-		];
-
 		$sql = "SELECT 
-					sec.id,
-					modu.nombre AS nombre_modulo,
-					sec.nombre AS nombre_sesion,
-					sec.estatus,
-					sec.icono,
-					sec.descripcion
-				FROM usuarios.secciones sec
-				INNER JOIN usuarios.modulos modu ON modu.id = sec.modulo_id
-				WHERE sec.modulo_id = :id_modulo 
-				ORDER BY sec.nombre ASC";
+					m.id,
+					m.nombre					
+				FROM usuarios.modulos m 
+				WHERE m.estatus = true				
+				ORDER BY m.descripcion ASC";
 		
 		$sth = $c->prepare($sql);
 				
-		$sth->execute($data_consulta);
+		$sth->execute();
 		
 		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
 		
@@ -298,131 +330,86 @@ class MS
 		
 	}
 
-	/** cambiar el estatus de la sesion **/
-	function estatusSesion($id,$estatus,$fecha,$id_usuario){
+	//buscar Sesiones Activos
+	public function buscarSesionesActivos($id_modulo,$id_rol){
 
 		$conexion = new Database();
 
 		$c = $conexion->conectar();
 
-		$c->beginTransaction();
-
-		$data = [
-			'id' => $id,
-			'estatus' => $estatus,
-			'fecha_modificacion' => $fecha,
-			'id_usuario'=>$id_usuario,
-		];
-
-		$sql = "UPDATE usuarios.secciones SET
-									estatus = :estatus, 
-									fecha_modificacion = :fecha_modificacion, 
-									usuario_id = :id_usuario
-								WHERE id = :id";
-		
-		$sth = $c->prepare($sql);
-
-		if($sth->execute($data)){
-			$c->commit();
-			$result = 1;
-		}
-		else{
-			$result = 0;
-		}
-
-		$conexion->disconnec();
-		
-		return $result;
-	}	
-
-	//actualizar sesion
-	function actualizarSesion($descripcion,$nombre,$icono,$id_sesion,$id_usuario){
-
-		$conexion = new Database();
-
-		$c = $conexion->conectar();
-
-		$c->beginTransaction();
-
-		$data_consulta = [
-			'nombre' => $nombre,
-			'id_sesion' => $id_sesion,
-		];
-
-		$data = [
-			'nombre' => $nombre,
-			'icono' => $icono,
-			'descripcion' => $descripcion,
-			'id_sesion' => $id_sesion,
-			'id_usuario' => $id_usuario,
-		];
-
-		$consulta = "SELECT id FROM usuarios.secciones WHERE nombre = :nombre AND id <> :id_sesion";
-
-		$sth = $c->prepare($consulta);
-		$sth->execute($data_consulta);
-		$resultado = $sth->fetch(PDO::FETCH_ASSOC);
-
-		if($resultado == null){
-
-			$sql = "UPDATE usuarios.secciones SET 
-						nombre = :nombre, 
-						icono = :icono,
-						descripcion = :descripcion,
-						fecha_modificacion = 'now()',
-						usuario_id = :id_usuario
-					WHERE id = :id_sesion";
-
-			$sth = $c->prepare($sql);
-
-			if($sth->execute($data)){
-				$c->commit();
-				$result = 1;
-			}
-			else
-			{
-				$c->errorInfo();
-				//error
-				$result = 2;
-			}
-		}
-		else{
-			//ya existe el nombre
-			$result = 3;
-		}
-		
-		$conexion->disconnec();
-		
-		return $result;
-	}
-
-	//eliminar modulo
-	function eliminarModulo($id_modulo,$id_usuario){
-		
-		$conexion = new Database();
-
-		$c = $conexion->conectar();
-
-		$c->beginTransaction();
-
-		$data = [
+		$data_consulta_sesion = [
 			'id_modulo' => $id_modulo,
 		];
 
-		$consulta = "SELECT id FROM usuarios.secciones WHERE modulo_id = :id_modulo";
+		$sql = "SELECT id, nombre FROM usuarios.secciones WHERE modulo_id = :id_modulo AND estatus = true ";
+		
+		$sth = $c->prepare($sql);
+				
+		$sth->execute($data_consulta_sesion);
+		
+		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
 
-		$sth = $c->prepare($consulta);
-		$sth->execute($data);
-		$resultado = $sth->fetch(PDO::FETCH_ASSOC);
 
-		if($resultado == null){
+		$resultado_final = null;
+		foreach ($result as $key => $value) {
+			# code...
+			
+			$data_consulta_role = [
+				'id_sesion' => $value['id'],
+				'id_rol' => $id_rol,
+			];
+			
+			$sql1 = "SELECT id FROM usuarios.roles_x_sesiones WHERE rol_id = :id_rol AND sesion_id = :id_sesion ";
+			
+			$sth = $c->prepare($sql1);
+			
+			$sth->execute($data_consulta_role);
+			
+			$result1 = $sth->fetchAll(PDO::FETCH_ASSOC);
 
-			$sql = "DELETE FROM usuarios.modulos WHERE id = :id_modulo";
+			
+			$estatus = ($result1 != null )? 1: 0;
 
+			$result[$key]['estatus_rol'] = $estatus;
+			
+		}
+
+		$conexion->disconnec();
+		
+		return $result;
+	}
+
+	//buscar Modulos Activos
+	public function AsignarRol($id_rol,$id_sesion,$estatus,$id_usuario){
+
+		$conexion = new Database();
+
+		$c = $conexion->conectar();
+
+		//agragar el rol
+		if($estatus == 1){
+
+			$data = [
+				'rol_id' => $id_rol,
+				'sesion_id' => $id_sesion,
+				'usuario_id' => $id_usuario,
+			];
+
+
+			$sql = "INSERT INTO usuarios.roles_x_sesiones (
+								rol_id,
+								sesion_id,
+								fecha_creacion,
+								usuario_id_creador)
+						VALUES (
+								:rol_id,
+								:sesion_id,
+								'now()',
+								:usuario_id)";
+								
 			$sth = $c->prepare($sql);
-
 			if($sth->execute($data)){
-				$c->commit();
+				//$c->commit();
 				$result = 1;
 			}
 			else
@@ -431,46 +418,31 @@ class MS
 				//error
 				$result = 2;
 			}
+
 		}
+		//eliminar registro
 		else{
-			//tiene sesiones asociadas
-			$result = 3;
+
+			$data_eliminar = [
+				'rol_id' => $id_rol,
+				'sesion_id' => $id_sesion,
+			];
+
+			$sql_eliminar = "DELETE FROM usuarios.roles_x_sesiones WHERE rol_id = :rol_id AND sesion_id = :sesion_id";
+		
+			$sth = $c->prepare($sql_eliminar);
+			if($sth->execute($data_eliminar)){
+				//$c->commit();
+				$result = 3;
+			}
+			else
+			{
+				$c->errorInfo();
+				//error
+				$result = 2;
+			}
 		}
-		
-		$conexion->disconnec();
-		
-		return $result;
 
-	}
-
-	//eliminar sesion
-	function eliminarSesion($id_sesion,$id_usuario){
-		$conexion = new Database();
-
-		$c = $conexion->conectar();
-
-		$c->beginTransaction();
-
-		$data = [
-			'id_sesion' => $id_sesion,
-		];
-
-		
-		$sql = "DELETE FROM usuarios.secciones WHERE id = :id_sesion";
-
-		$sth = $c->prepare($sql);
-
-		if($sth->execute($data)){
-			$c->commit();
-			$result = 1;
-		}
-		else
-		{
-			$c->errorInfo();
-			//error
-			$result = 2;
-		}
-		
 		$conexion->disconnec();
 		
 		return $result;

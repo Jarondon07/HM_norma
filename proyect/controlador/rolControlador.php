@@ -11,14 +11,13 @@ $id_usuario = $_SESSION['id'];
 
 class TipoRegistro{
     const CrearRol = 1;
-    /*const BuscarModulo = 2;
-    const CambioEstatusModulo = 3;
-    const CrearSesion = 4;
-    const ActualizarModulo = 5;
-    const BuscarSesion = 6;
-    const CambioEstatusSesion = 7;
-    const ActualizarSesion = 8;
-    const EliminarRegistro = 9;*/
+    const BuscarRoles = 2;
+    const CambioEstatusRol = 3;
+    const ActualizarRol = 4;
+    const EliminarRol = 5;
+    const SelectModulos = 6;
+    const SelectSesiones = 7;
+    const AsignarRol = 8;
 }
 
 /** Crear usuario **/
@@ -34,15 +33,15 @@ if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::CrearR
     exit();    
 }
 
-/** buscar modulos **/
-if(isset($_GET['tipo_accion']) && $_GET['tipo_accion'] == TipoRegistro::BuscarModulo){
+/** buscar ROLES **/
+if(isset($_GET['tipo_accion']) && $_GET['tipo_accion'] == TipoRegistro::BuscarRoles){
     
-    $listaModulos = $db->buscarModulo();
+    $listaRoles = $db->buscarRoles();
 
-    $total = count($listaModulos);
+    $total = count($listaRoles);
     
     $data = [ 
-        "lista" => $listaModulos,
+        "lista" => $listaRoles,
         "total" => $total 
     ];
     
@@ -51,117 +50,88 @@ if(isset($_GET['tipo_accion']) && $_GET['tipo_accion'] == TipoRegistro::BuscarMo
     exit();
 }
 
-/** cambiar estatus del modulo **/
-if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::CambioEstatusModulo){
+/** cambiar estatus del ROL **/
+if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::CambioEstatusRol){
     
     $id = $_POST['id'];
     $estatus = $_POST['estatus'];
 
-    $cambiarEstatusModulos = $db->estatusModulo($id,$estatus,$fecha,$id_usuario);
+    $cambiarEstatusRol = $db->estatusRol($id,$estatus,$fecha,$id_usuario);
 
     
     header('Content-type: application/json; charset=utf-8');
-    echo json_encode($cambiarEstatusModulos);
+    echo json_encode($cambiarEstatusRol);
     exit();
 }
 
-/** asignar sesiones a modulos **/
-if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::CrearSesion){
+/** Actualizar Rol **/
+if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::ActualizarRol){
 
     $descripcion = $_POST['descripcion'];
-    $nombre = $_POST['nombre'];
-    $icono=  $_POST['icono'];
-    $id_modulo = $_POST['id_modulo'];
-    $archivo = $_POST['archivo'];
-    
-    $result = $db->crearSesion($descripcion,$nombre,$icono,$id_modulo,$id_usuario,$archivo);
-
-    
-    header('Content-type: application/json; charset=utf-8');
-    echo json_encode($result);
-    exit();
-}
-
-/** Actualizar modulo **/
-if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::ActualizarModulo){
-
-    $descripcion = $_POST['descripcion'];
-    $nombre = $_POST['nombre'];
-    $icono=  $_POST['icono'];
-    $id_modulo = $_POST['id_modulo'];
-    
-    $result = $db->actualizarModulo($descripcion,$nombre,$icono,$id_modulo,$id_usuario);
-
-    header('Content-type: application/json; charset=utf-8');
-    echo json_encode($result);
-    exit();
-}
-
-/** Buscar sesiones de un modulos **/
-if(isset($_GET['tipo_accion']) && $_GET['tipo_accion'] == TipoRegistro::BuscarSesion){
-    
-    $id_modulo = $_GET['id_modulo'];
-
-    $listaSesion = $db->buscarSesion($id_modulo);
-
-    $total = count($listaSesion);
-    
-    $data = [ 
-        "lista" => $listaSesion,
-        "total" => $total 
-    ];
-    
-    header('Content-type: application/json; charset=utf-8');
-    echo json_encode($data);
-    exit();
-}
-
-/** cambiar estatus del sesion **/
-if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::CambioEstatusSesion){
-    
     $id = $_POST['id'];
-    $estatus = $_POST['estatus'];
-
-    $cambiarEstatusSesion = $db->estatusSesion($id,$estatus,$fecha,$id_usuario);
-
     
-    header('Content-type: application/json; charset=utf-8');
-    echo json_encode($cambiarEstatusSesion);
-    exit();
-}
-/** Actualizar sesion **/
-if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::ActualizarSesion){
-
-    $descripcion = $_POST['descripcion'];
-    $nombre = $_POST['nombre'];
-    $icono=  $_POST['icono'];
-    $id_sesion = $_POST['id_sesion'];
-    
-    $result = $db->actualizarSesion($descripcion,$nombre,$icono,$id_sesion,$id_usuario);
+    $result = $db->actualizarRol($descripcion,$id,$id_usuario);
 
     header('Content-type: application/json; charset=utf-8');
     echo json_encode($result);
     exit();
 }
+
 
 /** Eliminar **/
-if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::EliminarRegistro){
+if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::EliminarRol){
 
 
-    if(!$_POST['id_sesion']){
-        $id_modulo = $_POST['id_modulo'];
+    $id = $_POST['id'];
 
-        $result = $db->eliminarModulo($id_modulo,$id_usuario);
+    $result = $db->eliminarRol($id,$id_usuario);
         
-    }else{
-        $id_sesion = $_POST['id_sesion'];
-
-        $result = $db->eliminarSesion($id_sesion,$id_usuario);
-    }
-
-    
-
     header('Content-type: application/json; charset=utf-8');
     echo json_encode($result);
     exit();
+}
+
+/** buscar Modulos **/
+if(isset($_GET['tipo_accion']) && $_GET['tipo_accion'] == TipoRegistro::SelectModulos){
+    
+    $listaModulos = $db->buscarModuloActivos();
+
+    $data = [ 
+        "lista" => $listaModulos,
+    ];
+    
+    header('Content-type: application/json; charset=utf-8');
+    echo json_encode($data);
+    exit();
+}
+
+/** buscar Sesiones **/
+if(isset($_GET['tipo_accion']) && $_GET['tipo_accion'] == TipoRegistro::SelectSesiones){
+
+    $id_modulo = $_GET['id_modulo'];
+    $id_rol = $_GET['id_rol'];
+    
+    $listaSesiones = $db->buscarSesionesActivos($id_modulo,$id_rol);
+
+    $data = [ 
+        "lista" => $listaSesiones,
+    ];
+    
+    header('Content-type: application/json; charset=utf-8');
+    echo json_encode($data);
+    exit();
+}
+
+/** Asociar Rol a Sesion */
+if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::AsignarRol){
+        
+    $id_rol = $_POST['id_rol'];
+    $id_sesion = $_POST['id_sesion'];
+    $estatus = $_POST['estatus'];
+    
+    $asignarRol = $db->AsignarRol($id_rol,$id_sesion,$estatus,$id_usuario);
+
+    header('Content-type: application/json; charset=utf-8');
+    echo json_encode($asignarRol);
+    exit();    
 }
