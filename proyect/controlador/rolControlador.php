@@ -1,5 +1,5 @@
 <?php
-include "../modelo/modulos_seccionesModelo.php";
+include "../modelo/rolModelo.php";
 //include "../views/admin/funciones.php";
 
 /** variable del usuario **/
@@ -10,28 +10,27 @@ session_start();
 $id_usuario = $_SESSION['id'];
 
 class TipoRegistro{
-    const CrearModulo = 1;
-    const BuscarModulo = 2;
+    const CrearRol = 1;
+    /*const BuscarModulo = 2;
     const CambioEstatusModulo = 3;
     const CrearSesion = 4;
     const ActualizarModulo = 5;
     const BuscarSesion = 6;
     const CambioEstatusSesion = 7;
     const ActualizarSesion = 8;
-    const EliminarRegistro = 9;
+    const EliminarRegistro = 9;*/
 }
 
 /** Crear usuario **/
-if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::CrearModulo){
+if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::CrearRol){
         
     $nombre = $_POST['nombre'];
-    $icono = $_POST['icono'];
-    $descripcion = $_POST['descripcion'];
+    
 
-    $crearMS = $db->crearModulo($nombre,$icono,$descripcion,$id_usuario);
+    $crearRol = $db->crearRol($nombre,$id_usuario);
 
     header('Content-type: application/json; charset=utf-8');
-    echo json_encode($crearMS);
+    echo json_encode($crearRol);
     exit();    
 }
 

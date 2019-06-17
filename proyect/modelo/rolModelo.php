@@ -2,13 +2,13 @@
 require_once '../config/config.php';
 
 /**
- * clase Modulos y Secciones
+ * clase ROLES
  */
 class MS
 {
 	
-	//Crear Usuario
-	public function crearModulo($nombre,$icono,$descripcion,$id_usuario){
+	//Crear ROL
+	public function crearRol($nombre,$id_usuario){
 
 		$conexion = new Database();
 
@@ -16,18 +16,17 @@ class MS
 
 		$c->beginTransaction();
 
+
 		$data_consulta = [
-			'nombre' => $nombre,
-		];
-		
-		$data = [
-			'nombre' => $nombre,
-			'icono' => $icono,
-			'descripcion' => $descripcion,
-			'id_usuario'=>$id_usuario,
+			'descripcion' => $nombre,
 		];
 
-		$consulta = "SELECT id FROM usuarios.modulos WHERE nombre = :nombre";
+		$data = [
+			'descripcion' => $nombre,
+			'id_usuario' => $id_usuario,
+		];
+
+		$consulta = "SELECT id FROM usuarios.roles WHERE descripcion = :descripcion";
 
 		$sth = $c->prepare($consulta);
 		$sth->execute($data_consulta);
@@ -35,17 +34,13 @@ class MS
 
 		if($resultado == null){
 
-			$sql = "INSERT INTO usuarios.modulos (
+			$sql = "INSERT INTO usuarios.roles (
 									descripcion, 
 									estatus,
-									nombre, 
-									icono,
 									fecha_creacion, 
 									usuario_id)
 					VALUES (:descripcion,
 							false,
-							:nombre,
-							:icono,
 							'now()',
 							:id_usuario)";
 		

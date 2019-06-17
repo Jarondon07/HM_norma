@@ -44,6 +44,12 @@
                         Modulos Secciones
                     </a>
                 </li>
+                <li>
+                    <a href="roles.php">
+                        <i class="fa fa-random"></i> 
+                        Roles
+                    </a>
+                </li>
                 <li class="">
                     <a href="#"><i class="fa fa-wrench fa-fw"></i> Archivos<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">

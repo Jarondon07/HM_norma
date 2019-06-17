@@ -1,10 +1,10 @@
 $(function(){
-	console.log("Modulos y Secciones");
+	console.log("Roles");
 
     buscarModulo();
 	
-	$("#guardar_modulo").on("click",(e)=>{
-		guardarModulo()
+	$("#guardar_rol").on("click",(e)=>{
+		guardarRol()
 	});
 
 	/*$("#guardar_usuario").on("keypress",(e)=>{
@@ -13,10 +13,10 @@ $(function(){
 		}
 	});*/
 
-	$("#from_crear_modulo").on("keypress",(e)=>{
+	$("#from_crear_rol").on("keypress",(e)=>{
 
 		if(e.keyCode === 13){
-			guardarModulo();
+			guardarRol();
 		}
 	})
 
@@ -65,61 +65,33 @@ $(function(){
 	
 });
 
-var capt_modulo = {
-    cod : null,
-    nombre : null,
-    icono : null, 
-    descripcion : null,
-}; 
+//guardar Rol
+function guardarRol(){
+	console.log("guardar ROL");
 
-var capt_sesion = {
-    cod_sesion : null,
-    nombre : null,
-}
-
-//guardar modulo
-function guardarModulo(){
-	console.log("guardar modulo");
-
- 	let descripcion = $("#descripcion_modulo").val().trim(),
-    nombre = $("#nombre_modulo").val().trim(),
-    icono = $("#icono_modulo").val().trim();
+ 	let nombre = $("#nombre_rol").val().trim();
 
 	$(".form-group").removeClass('has-error');
 
     if(nombre.length === 0){
-        alerta_mensaje('warning', 'Debe ingresar el nombre del Modulo', $("#mensaje_modal_crear"));
-        $("#nombre_modulo_error").addClass('has-error');
+        alerta_mensaje('warning', 'Debe ingresar el nombre del Rol', $("#mensaje_modal_crear"));
+        $("#nombre_rol_error").addClass('has-error');
         return;
     }
-
-    if(icono.length === 0){
-        alerta_mensaje('warning', 'Debe ingresar el icono del Modulo', $("#mensaje_modal_crear"));
-        $("#icono_modulo_error").addClass('has-error');
-        return;
-    }
-
-	if(descripcion.length === 0){
-		alerta_mensaje('warning', 'Debe ingresar la descripcion del Modulo', $("#mensaje_modal_crear"));
-		$("#descripcion_modulo_error").addClass('has-error');
-		return;
-	}
-
+  
 	var settings = {
         "async": true,
         "crossDomain": true,
         "type": "POST",
         "dataType": "json",
-        "url": url_api+"modulo_seccionesControlador.php",
+        "url": url_api+"rolControlador.php",
         "cache": false,
         "data": {
         	"tipo_accion": 1,
             "nombre" : nombre,
-            "icono" : icono,
-			"descripcion" : descripcion,
-    	},
+        },
     	"beforeSend" : function() {
-            $('#guardar_modulo').html('Guardando.....');     
+            $('#guardar_rol').html('Guardando.....');     
             showLoader();
         },
     };
@@ -131,34 +103,34 @@ function guardarModulo(){
     	console.log(data);
     	switch(data){
     		case 1:
-    			$('#guardar_modulo').html('Guardar');
-    			buscarModulo(1);
-    			$("#crear_modulo").modal('hide');
-				alerta_mensaje('success', 'Modulo Registrado', $("#mensaje"));
+    			$('#guardar_rol').html('Guardar');
+    			buscarRol(1);
+    			$("#crear_rol").modal('hide');
+				alerta_mensaje('success', 'Rol Registrado', $("#mensaje"));
 				$(".form-control").val("");
     		break;
     		case 3:
-                alerta_mensaje('danger', 'Nombre de modulo ya se encuentra registrado', $("#mensaje_modal_crear"));
-                $("#nombre_modulo_error").addClass('has-error');
-                $('#guardar_modulo').html('Guardar');
+                alerta_mensaje('danger', 'Nombre del Rol ya se encuentra registrado', $("#mensaje_modal_crear"));
+                $("#nombre_rol_error").addClass('has-error');
+                $('#guardar_rol').html('Guardar');
             break;
     		default:
     			alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_modal_crear"));
-    			$('#guardar_modulo').html('Guardar');
+    			$('#guardar_rol').html('Guardar');
     		break;
     	}
     	
     })
     .fail(function(jqXHR, textStatus, errorThrown){
     	//console.log("fallo el envio")
-    	$('#guardar_modulo').html('Guardar');  
+    	$('#guardar_rol').html('Guardar');  
     	alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR', $("#mensaje_modal_crear"));
     });
     hideLoader();
 }
 
-//buscar y listar los Modulos
-function buscarModulo(loandig){
+//buscar y listar los ROLES
+function buscarRol(loandig){
     loandig = loandig || 0;
 	//console.log(loandig);
 
