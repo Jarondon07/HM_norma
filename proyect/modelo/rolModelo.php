@@ -447,4 +447,35 @@ class MS
 		
 		return $result;
 	}
+	//resultado de todos los registros asignados a un rol
+	function buscarRolesAsignados($id_rol){
+
+
+		$conexion = new Database();
+
+		$c = $conexion->conectar();
+
+		$data = [
+			'rol_id' => $id_rol,
+		];
+
+		$sql = "SELECT 
+					rs.id, 
+					rs.rol_id, 
+					rs.sesion_id,
+					se.nombre AS sesion,
+					mo.nombre AS modulo
+				FROM usuarios.roles_x_sesiones rs
+				INNER JOIN usuarios.secciones se ON se.id = rs.sesion_id
+				INNER JOIN usuarios.modulos mo ON mo.id = se.modulo_id
+				WHERE rol_id = :rol_id";
+
+		$sth = $c->prepare($sql);
+		$sth->execute($data);
+		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+		$conexion->disconnec();
+		
+		return $result;
+	}
 }

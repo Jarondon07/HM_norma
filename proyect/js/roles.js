@@ -500,6 +500,8 @@ function gestionar_rol(id,descripcion){
     
     $("#roles").addClass('oculto');
     $("#gestionar_roles").removeClass('oculto');
+
+    buscarSesionesAsignadas(id);
 }
 
 //atras
@@ -569,5 +571,68 @@ function asignar_sesion(id_sesion,estatus,loandig){
         
     });
     hideLoader();
+
+}
+
+//Buscar las sesiones asignadas a este rol
+function buscarSesionesAsignadas(id,loandig){
+    console.log("rol "+id)
+
+    loandig = loandig || 0;
+
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "type": "GET",
+        "dataType": "json",
+        "url": url_api+"rolControlador.php",
+        "cache": false,
+        "data": {
+            "tipo_accion": 9,
+            "id_rol": id,
+        },
+        "beforeSend" : function() {
+            (loandig == 0?showLoader():'');
+        },
+    };
+
+    $("#registros_rol_asinados").empty();
+
+    $.ajax(settings)
+    .done(function(data, textStatus, jqXHR){
+
+        let resultado = data;
+        //console.log(resultado);
+        if(resultado.total == 0){
+            let fila = '';
+            fila += '<tr class="text-center">';
+                fila += '<td colspan="2"><strong>NO HAY REGISTROS</strong></td>';
+            fila += '</tr>'; 
+            $("#registros_rol_asinados").append(fila);
+        }
+        else
+        { 
+            data.lista.forEach((data,i) => {
+               let fila = '';
+
+                fila += '<tr>';
+                    fila += '<td>'+data.modulo+'</td>';
+                    fila += '<td>'+data.sesion+'</td>';
+                fila += '</tr>'; 
+
+                $("#registros_rol_asinados").append(fila);
+            })
+        }
+
+        
+    })
+    .fail(function(jqXHR, textStatus, errorThrown){
+        //console.log("fallo el envio")
+        alerta_mensaje('danger', 'Disculpe ha ocurrido un ERROR.', $("#mensaje_rol_gestion"));
+        
+    });
+    hideLoader();
+
+
 
 }

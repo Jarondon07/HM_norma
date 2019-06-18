@@ -18,6 +18,7 @@ class TipoRegistro{
     const SelectModulos = 6;
     const SelectSesiones = 7;
     const AsignarRol = 8;
+    const ListaAsignadosRol = 9;
 }
 
 /** Crear usuario **/
@@ -135,3 +136,24 @@ if(isset($_POST['tipo_accion']) && $_POST['tipo_accion'] == TipoRegistro::Asigna
     echo json_encode($asignarRol);
     exit();    
 }
+
+//lista de sesiones y modulos asignados a un rol
+if(isset($_GET['tipo_accion']) && $_GET['tipo_accion'] == TipoRegistro::ListaAsignadosRol){
+
+    
+    $id_rol = $_GET['id_rol'];
+    
+    $resultado = $db->buscarRolesAsignados($id_rol);
+
+    $total = count($resultado);
+    
+    $data = [ 
+        "lista" => $resultado,
+        "total" => $total 
+    ];
+
+    header('Content-type: application/json; charset=utf-8');
+    echo json_encode($data);
+    exit();
+}
+

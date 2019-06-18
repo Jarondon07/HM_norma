@@ -182,6 +182,7 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
         <script type="text/javascript" src="js/funciones.js"></script>
         <script type="text/javascript" src="js/loginOut.js"></script>
         <script type="text/javascript" src="js/archivos.js"></script>
+        <script type="text/javascript" src="js/menu.js"></script>
 
     </body>
 </html>

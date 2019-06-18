@@ -124,11 +124,9 @@ if(!empty($id) && !empty($acceso) && $acceso === 'diegoESTUDIO')
                                                         <tr>
                                                             <th>Modulo</th>
                                                             <th>Sesion</th>
-                                                            <th>Estatus</th>
-                                                            <th>Accion</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody id="registros_sesion">
+                                                    <tbody id="registros_rol_asinados">
                                                         <!-- aqui van los registros -->
                                                     </tbody>
                                                 </table>
