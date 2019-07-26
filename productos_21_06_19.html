@@ -1,0 +1,79 @@
+<div id="productos" style='background:red; padding: 20px'>
+	<table>
+		<tbody id="tabla">
+			
+		</tbody>
+	</table>
+</div>
+<div id="productos-modal">
+	<input type="text" id="nombre_p">
+	<button id='add_button'>add</button>
+</div>
+
+<script>
+var Productos = {
+	nuevo: {
+		id: null,
+		nombre: '',
+	},
+	init: function(){
+		console.log(this.nuevo)
+		this.state = {
+			productos: [],
+			nuevo: Object.assign({}, this.nuevo)
+		};
+
+		this.events();
+
+		this.loadList();
+	},
+	loadList: function(){
+		
+		this.state.productos = [];
+
+		this.updateTable();
+	},
+	events: function(){
+		var that = this;
+
+		document.querySelector("#add_button").addEventListener("click", function(){
+			
+			that.addProduct();
+			//esconder modal
+		});
+
+		document.querySelector("#nombre_p").addEventListener("input", function(e){
+			that.state.nuevo.nombre = e.target.value;
+			console.log(that.state)
+		});
+	},
+	updateTable: function(){
+		var that = this;
+
+		var html = '';
+
+		this.state.productos.forEach(function(p){
+			html += "<tr>";
+			html += "<td>"+p.nombre+"</td>";
+			html += "</tr>";
+		});
+
+		document.querySelector("#tabla").innerHTML = html;
+	},
+	newModal: function(data){
+		document.querySelector("#nombre_p").value = data.nombre;
+	},
+	addProduct: function(){
+		this.state.nuevo.id = Math.random() * 20;
+		this.state.productos.push(this.state.nuevo);
+		this.state.nuevo = Object.assign({}, this.nuevo);		
+		this.updateTable();
+		this.update();
+	},
+	update: function(){
+		document.querySelector("#nombre_p").value = this.state.nuevo.nombre;
+	},
+};
+
+Productos.init();
+</script>
